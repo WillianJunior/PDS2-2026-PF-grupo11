@@ -1,0 +1,3 @@
+ - user stories: o número de stories e critérios de aceitação pareceram poucos no inicio, porém eles são ricos em detalhes e bem descritivos.
+ - crc: a qualidade dos cartões crc refletem os detalhes nas user stories.
+ - notas gerais: excelente trabalho. ambas entregas muito boas, e imagino que as próximas entregas serão tranquilas, seguindo a modelagem feita. a modelagem aponta para um sistema com tamanho adequado ao esperado na disciplina. não identifiquei hierarquias descritas diretamente, porém existem várias oportunidades na modelagem de vocês. só não se esqueçam de implementar isso :)
