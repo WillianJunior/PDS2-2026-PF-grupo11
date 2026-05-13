@@ -1,0 +1,4 @@
+ - Gostei muito do uso de referências (&) e de consts, tanto em argumentos como em métodos.
+ - Documentação bem descritiva, mas parece incompleta. Cadê a classe Template?
+ - Não vi nada sobre como isso será impresso na tela. Cadê a parte de UI? Isso me preocupa.
+ - README muito simplório e não revisado: "opcoes", "eh", "agradavel"...
