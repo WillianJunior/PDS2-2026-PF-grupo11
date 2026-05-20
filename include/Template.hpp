@@ -1,80 +1,84 @@
-#ifndef GERENCIADORDETEMPLATE_HPP
-#define GERENCIADORDETEMPLATE_HPP
+#ifndef TEMPLATE_HPP
+#define TEMPLATE_HPP
 
-#include <vector>
 #include <string>
-#include <map>
-#include "Template.hpp"
-#include "FiltroDeCategoria.hpp"
+#include <vector>
+
+/**
+ * @file Template.hpp
+ * @brief Definição da classe Template.
+ */
 
  /**
-  * @class GerenciadorDeTemplate
-  * @brief Controla o ciclo de vida dos templates e centraliza as operações do sistema.
+  * @class Template
+  * @brief Representa um modelo ou padrão reutilizável no sistema.
   *
-  * Atua como a classe controladora (Controller), gerenciando a coleção de
-  * templates. Fornece métodos para criação, exclusão, busca e delega a
-  * validação de ingredientes diretamente para a classe Template.
+  * Esta classe armazena as informações do template e gerencia as regras
+  * de negócio referentes aos tipos de ingredientes que ele permite receber.
   */
-class GerenciadorDeTemplate {
+class Template {
 private:
-    std::map<int, Template> mapaDeTemplates; ///< Armazena os templates usando o ID como chave para busca rápida.
+    int id;                                   ///< Identificador único do template.
+    std::string nome;                         ///< Nome descritivo do template.
+    std::string conteudo;                     ///< O conteúdo ou estrutura do template.
+    std::string categoria;                    ///< Categoria para fins de organização e filtragem.
+    std::vector<std::string> tiposPermitidos; ///< Lista que guarda os tipos de ingredientes permitidos.
 
 public:
     /**
-     * @brief Construtor padrão do Gerenciador.
+     * @brief Construtor da classe Template.
+     * @param _id Identificador único.
+     * @param _nome Nome do template.
+     * @param _conteudo Corpo principal do template.
+     * @param _categoria Categoria associada.
      */
-    GerenciadorDeTemplate() = default;
+    Template(int _id, std::string _nome, std::string _conteudo, std::string _categoria);
 
     /**
-     * @brief Adiciona um novo template ao sistema.
-     * @param novoTemplate O objeto da classe Template a ser armazenado.
-     * @return true se adicionado com sucesso, false se o ID do template já existir.
+     * @brief Obtém o ID do template.
+     * @return O valor inteiro do ID.
      */
-    bool adicionarTemplate(const Template& novoTemplate);
+    int getId() const;
 
     /**
-     * @brief Remove um template do sistema pelo seu identificador.
-     * @param id O identificador numérico do template a ser removido.
-     * @return true se o template foi encontrado e removido, false caso contrário.
+     * @brief Obtém o nome do template.
+     * @return Uma string com o nome.
      */
-    bool removerTemplate(int id);
+    std::string getNome() const;
 
     /**
-     * @brief Busca um template específico no sistema através do seu ID.
-     * @param id O identificador numérico do template.
-     * @return Um ponteiro para o Template correspondente, ou nullptr se não for encontrado.
+     * @brief Obtém a categoria do template.
+     * @return Uma string com a categoria.
      */
-    Template* buscarTemplatePorId(int id);
+    std::string getCategoria() const;
 
     /**
-     * @brief Retorna a lista completa de todos os templates cadastrados.
-     * @return Vetor contendo todos os templates armazenados no gerenciador.
+     * @brief Adiciona um novo tipo de ingrediente à lista de permitidos deste template.
+     * @param tipo O tipo de ingrediente (ex: "Seco", "Líquido", "Proteína").
      */
-    std::vector<Template> listarTodos() const;
+    void adicionarTipoPermitido(const std::string& tipo);
 
     /**
-     * @brief Busca e lista templates aplicando uma regra de filtro de categoria.
-     * @param filtro Objeto instanciado do FiltroDeCategoria contendo a regra.
-     * @return Vetor contendo apenas os templates que passaram na validação do filtro.
+     * @brief Expõe os tipos permitidos.
+     * @return Um vetor contendo todas as strings de tipos de ingredientes aceitos.
      */
-    std::vector<Template> buscarPorCategoria(const FiltroDeCategoria& filtro) const;
+    std::vector<std::string> getTiposPermitidos() const;
 
     /**
-     * @brief Valida se um tipo de ingrediente é aceito por um template específico.
+     * @brief Regra de aceitação: verifica se o template aceita um determinado tipo de ingrediente.
      *
-     * Este método busca o template pelo ID e chama internamente a função
-     * aceitaTipoIngrediente() do próprio template, respeitando o encapsulamento.
+     * Este método busca o tipo passado como parâmetro dentro da lista
+     * interna de tipos permitidos.
      *
-     * @param idTemplate O identificador numérico do template a ser consultado.
-     * @param tipoIngrediente A string representando o tipo do ingrediente a ser testado.
-     * @return true se o template existir e aceitar o ingrediente, false caso contrário.
+     * @param tipo O tipo de ingrediente que se deseja testar.
+     * @return true se o tipo é permitido, false se for rejeitado.
      */
-    bool validarIngredienteNoTemplate(int idTemplate, const std::string& tipoIngrediente) const;
+    bool aceitaTipoIngrediente(const std::string& tipo) const;
 
     /**
      * @brief Destrutor padrão.
      */
-    ~GerenciadorDeTemplate() = default;
+    ~Template() = default;
 };
 
-#endif // GERENCIADORDETEMPLATE_HPP
+#endif // TEMPLATE_HPP
