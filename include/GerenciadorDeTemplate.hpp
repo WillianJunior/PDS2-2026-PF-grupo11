@@ -9,11 +9,11 @@
 
  /**
   * @class GerenciadorDeTemplate
-  * @brief Controla o ciclo de vida dos templates e centraliza as operaÁıes do sistema.
+  * @brief Controla o ciclo de vida dos templates e centraliza as opera√ß√µes do sistema.
   *
-  * Atua como a classe controladora (Controller), gerenciando a coleÁ„o de
-  * templates em memÛria estruturada por IDs. Fornece mÈtodos para criaÁ„o,
-  * exclus„o, busca e integraÁ„o com as regras de negÛcio de ingredientes.
+  * Atua como a classe controladora (Controller), gerenciando a cole√ß√£o de
+  * templates em mem√≥ria estruturada por IDs. Fornece m√©todos para cria√ß√£o,
+  * exclus√£o, busca e integra√ß√£o com as regras de neg√≥cio de ingredientes.
   */
 class GerenciadorDeTemplate {
 private:
@@ -21,32 +21,32 @@ private:
 
 public:
     /**
-     * @brief Construtor padr„o do Gerenciador.
+     * @brief Construtor padr√£o do Gerenciador.
      */
     GerenciadorDeTemplate() = default;
 
     /**
      * @brief Adiciona um novo template ao sistema.
      * @param novoTemplate O objeto da classe Template a ser armazenado.
-     * @return true se adicionado com sucesso, false se o ID do template j· existir no sistema.
+     * @return true se adicionado com sucesso, false se o ID do template j√° existir no sistema.
      */
     bool adicionarTemplate(const Template& novoTemplate);
 
     /**
      * @brief Remove um template do sistema pelo seu identificador.
-     * @param id O identificador numÈrico do template a ser removido.
-     * @return true se o template foi encontrado e removido, false caso contr·rio.
+     * @param id O identificador num√©rico do template a ser removido.
+     * @return true se o template foi encontrado e removido, false caso contr√°rio.
      */
     bool removerTemplate(int id);
 
     /**
-     * @brief Busca um template especÌfico no sistema atravÈs do seu ID.
+     * @brief Busca um template espec√≠fico no sistema atrav√©s do seu ID.
      *
-     * Utiliza ponteiros para evitar cÛpias desnecess·rias e permitir a modificaÁ„o
+     * Utiliza ponteiros para evitar c√≥pias desnecess√°rias e permitir a modifica√ß√£o
      * do template retornado (ex: adicionar novos tipos permitidos dinamicamente).
      *
-     * @param id O identificador numÈrico do template.
-     * @return Um ponteiro para o Template correspondente, ou nullptr se n„o for encontrado.
+     * @param id O identificador num√©rico do template.
+     * @return Um ponteiro para o Template correspondente, ou nullptr se n√£o for encontrado.
      */
     Template* buscarTemplatePorId(int id);
 
@@ -59,24 +59,24 @@ public:
     /**
      * @brief Busca e lista templates aplicando uma regra de filtro de categoria.
      * @param filtro Objeto instanciado do FiltroDeCategoria contendo a regra.
-     * @return Vetor contendo apenas os templates que passaram na validaÁ„o do filtro.
+     * @return Vetor contendo apenas os templates que passaram na valida√ß√£o do filtro.
      */
     std::vector<Template> buscarPorCategoria(const FiltroDeCategoria& filtro) const;
 
     /**
-     * @brief Delega a validaÁ„o de um ingrediente para o template especÌfico.
+     * @brief Delega a valida√ß√£o de um ingrediente para o template especÔøΩfico.
      *
-     * Interage com a regra de negÛcio da classe Template para verificar se o
+     * Interage com a regra de neg√≥cio da classe Template para verificar se o
      * tipo fornecido pode ser utilizado nele, sem precisar extrair o objeto inteiro.
      *
      * @param idTemplate O identificador do template a ser consultado.
      * @param tipoIngrediente A string representando a categoria/tipo do ingrediente.
-     * @return true se o template existir e aceitar o ingrediente, false caso contr·rio.
+     * @return true se o template existir e aceitar o ingrediente, false caso contr√°rio.
      */
     bool validarIngredienteNoTemplate(int idTemplate, const std::string& tipoIngrediente) const;
 
     /**
-     * @brief Destrutor padr„o.
+     * @brief Destrutor padr√£o.
      */
     ~GerenciadorDeTemplate() = default;
 };

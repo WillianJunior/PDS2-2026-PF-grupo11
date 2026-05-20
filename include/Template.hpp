@@ -6,28 +6,28 @@
 
 /**
  * @file Template.hpp
- * @brief Definição da classe Template.
+ * @brief DefiniÃ§Ã£o da classe Template.
  */
 
  /**
   * @class Template
-  * @brief Representa um modelo ou padrão reutilizável no sistema.
+  * @brief Representa um modelo ou padrÃ£o reutilizÃ¡vel no sistema.
   *
-  * Esta classe armazena as informações do template e gerencia as regras
-  * de negócio referentes aos tipos de ingredientes que ele permite receber.
+  * Esta classe armazena as informaÃ§Ãµes do template e gerencia as regras
+  * de negÃ³cio referentes aos tipos de ingredientes que ele permite receber.
   */
 class Template {
 private:
-    int id;                                   ///< Identificador único do template.
+    int id;                                   ///< Identificador Ãºnico do template.
     std::string nome;                         ///< Nome descritivo do template.
-    std::string conteudo;                     ///< O conteúdo ou estrutura do template.
-    std::string categoria;                    ///< Categoria para fins de organização e filtragem.
+    std::string conteudo;                     ///< O conteÃºdo ou estrutura do template.
+    std::string categoria;                    ///< Categoria para fins de organizaÃ§Ã£o e filtragem.
     std::vector<std::string> tiposPermitidos; ///< Lista que guarda os tipos de ingredientes permitidos.
 
 public:
     /**
      * @brief Construtor da classe Template.
-     * @param _id Identificador único.
+     * @param _id Identificador Ãºnico.
      * @param _nome Nome do template.
      * @param _conteudo Corpo principal do template.
      * @param _categoria Categoria associada.
@@ -35,48 +35,48 @@ public:
     Template(int _id, std::string _nome, std::string _conteudo, std::string _categoria);
 
     /**
-     * @brief Obtém o ID do template.
+     * @brief ObtÃ©m o ID do template.
      * @return O valor inteiro do ID.
      */
     int getId() const;
 
     /**
-     * @brief Obtém o nome do template.
+     * @brief ObtÃ©m o nome do template.
      * @return Uma string com o nome.
      */
     std::string getNome() const;
 
     /**
-     * @brief Obtém a categoria do template.
+     * @brief ObtÃ©m a categoria do template.
      * @return Uma string com a categoria.
      */
     std::string getCategoria() const;
 
     /**
-     * @brief Adiciona um novo tipo de ingrediente à lista de permitidos deste template.
-     * @param tipo O tipo de ingrediente (ex: "Seco", "Líquido", "Proteína").
+     * @brief Adiciona um novo tipo de ingrediente Ã  lista de permitidos deste template.
+     * @param tipo O tipo de ingrediente (ex: "Seco", "LÃ­quido", "ProteÃ­na").
      */
     void adicionarTipoPermitido(const std::string& tipo);
 
     /**
-     * @brief Expõe os tipos permitidos.
+     * @brief ExpÃµe os tipos permitidos.
      * @return Um vetor contendo todas as strings de tipos de ingredientes aceitos.
      */
     std::vector<std::string> getTiposPermitidos() const;
 
     /**
-     * @brief Regra de aceitação: verifica se o template aceita um determinado tipo de ingrediente.
+     * @brief Regra de aceitaÃ§Ã£o: verifica se o template aceita um determinado tipo de ingrediente.
      *
-     * Este método busca o tipo passado como parâmetro dentro da lista
+     * Este mÃ©todo busca o tipo passado como parÃ¢metro dentro da lista
      * interna de tipos permitidos.
      *
      * @param tipo O tipo de ingrediente que se deseja testar.
-     * @return true se o tipo é permitido, false se for rejeitado.
+     * @return true se o tipo Ã© permitido, false se for rejeitado.
      */
     bool aceitaTipoIngrediente(const std::string& tipo) const;
 
     /**
-     * @brief Destrutor padrão.
+     * @brief Destrutor padrï¿½o.
      */
     ~Template() = default;
 };

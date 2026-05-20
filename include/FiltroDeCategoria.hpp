@@ -7,10 +7,10 @@
 
  /**
   * @class FiltroDeCategoria
-  * @brief Respons·vel por encapsular o critÈrio de busca por categoria.
+  * @brief Respons√°vel por encapsular o crit√©rio de busca por categoria.
   *
-  * Esta classe aplica o PrincÌpio da Responsabilidade ⁄nica (SRP),
-  * separando a lÛgica de validaÁ„o do filtro da lÛgica de armazenamento
+  * Esta classe aplica o Princ√≠pio da Responsabilidade √önica (SRP),
+  * separando a l√≥gica de valida√ß√£o do filtro da l√≥gica de armazenamento
   * e controle do GerenciadorDeTemplate.
   */
 class FiltroDeCategoria {
@@ -20,36 +20,36 @@ private:
 public:
     /**
      * @brief Construtor da classe FiltroDeCategoria.
-     * @param _categoriaAlvo A string exata da categoria que servir· como critÈrio de busca.
+     * @param _categoriaAlvo A string exata da categoria que servir√° como crit√©rio de busca.
      */
     explicit FiltroDeCategoria(const std::string& _categoriaAlvo);
 
     /**
-     * @brief ObtÈm a categoria alvo configurada no filtro.
+     * @brief Obt√©m a categoria alvo configurada no filtro.
      * @return Uma string constante com a categoria alvo.
      */
     std::string getCategoriaAlvo() const;
 
     /**
-     * @brief Filtra uma coleÁ„o de templates com base na categoria alvo.
+     * @brief Filtra uma cole√ß√£o de templates com base na categoria alvo.
      *
-     * Itera sobre a lista fornecida, utilizando o mÈtodo getCategoria() de cada
-     * objeto Template para verificar se ele corresponde ao critÈrio estabelecido.
+     * Itera sobre a lista fornecida, utilizando o m√©todo getCategoria() de cada
+     * objeto Template para verificar se ele corresponde ao crit√©rio estabelecido.
      *
      * @param templates Lista de templates a serem avaliados.
-     * @return Um vetor contendo apenas os templates que correspondem ‡ categoria procurada.
+     * @return Um vetor contendo apenas os templates que correspondem √† categoria procurada.
      */
     std::vector<Template> aplicarFiltro(const std::vector<Template>& templates) const;
 
     /**
-     * @brief Avalia individualmente se um template satisfaz o critÈrio do filtro.
+     * @brief Avalia individualmente se um template satisfaz o crit√©rio do filtro.
      * @param t O template a ser avaliado.
-     * @return true se a categoria do template for igual ‡ categoria alvo, false caso contr·rio.
+     * @return true se a categoria do template for igual √† categoria alvo, false caso contr√°rio.
      */
     bool satisfazFiltro(const Template& t) const;
 
     /**
-     * @brief Destrutor padr„o.
+     * @brief Destrutor padr√£o.
      */
     ~FiltroDeCategoria() = default;
 };
