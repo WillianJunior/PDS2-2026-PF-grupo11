@@ -16,7 +16,7 @@ O usuário pode selecionar ingredientes de forma interativa, e o sistema valida 
 - Oferecer busca de receitas por nome, por ingredientes ou por ambos os critérios simultaneamente, com resultado seguindo ordem alfabética.
 - Filtrar templates e receitas por categoria gastronômica (ex: Massas, Carnes, Sobremesas).
 
-# Motivacao da escolha
+# Motivação da escolha
 O Ricettario surgiu como uma oportunidade de aplicar em um modelo prático a implementação orientada a objetos, aprendida ao longo desse semestre na disciplina proporcionando um ambiente inovador e de desafios para explorar o que estamos aprendendo. O catálogo da culinária italiana foi escolhido por oferecer uma estrutura, de fato, hierárquica (composta por categorias, templates, ingredientes, receitas), que se traduz de forma direta em uma modelagem orientada rica e expressiva.
 
 Ao estudar os temas, identificamos que a maioria dos sites e aplicativos de receitas funciona como simples repositórios estáticos, em que o usuário apenas consulta receitas prontas, sem possibilidade de personalização com validação. Dessa forma, decidimos por produzir o Ricettario, que preenche essa lacuna, ao permitir que o usuário monte suas próprias combinações de ingredientes dentro de regras controladas por templates, garantindo que o resultado seja uma receita coerente e autêntica ao mesmo tempo. O projeto forneceu um ambiente inovador, recheado de desafios técnicos relevantes, como a implementação de um sistema de busca com normalização de termos, validação de regras de negócio por composição de objetos e separação de responsabilidades seguindo o princípio SRP.
