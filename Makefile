@@ -3,7 +3,7 @@ CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb
 
 BIN		:= build
 SRC		:= src
-INCLUDE	:= include
+INCLUDE	:= include 
 LIB		:= lib
 
 LIBRARIES	:=
