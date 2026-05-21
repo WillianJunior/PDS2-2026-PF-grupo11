@@ -61,7 +61,7 @@ public:
      * @param filtro Objeto instanciado do FiltroDeCategoria contendo a regra.
      * @return Vetor contendo apenas os templates que passaram na validação do filtro.
      */
-    std::vector<Template> buscarPorCategoria(const FiltroDeCategoria& filtro) const;
+    std::vector<Template> filtrarPorCategoria(const FiltroDeCategoria& filtro) const;
 
     /**
      * @brief Delega a validação de um ingrediente para o template espec�fico.
