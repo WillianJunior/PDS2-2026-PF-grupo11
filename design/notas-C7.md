@@ -1,0 +1,5 @@
+ - código cheio de warnings, excelente. usar flags de warning é uma boa e vai ajudar a implementar o código corretamente.
+ - nice coverage
+ - raiz do projeto limpa, com todos arquivos gerados dentro do build (boa)
+ - os arqivos dentro de build aparecem como untracked no git status. colocar um .gitignore vai deixar o projeto ainda mais limpo
+ - makefile implementado corretamente: só recompila quando tem alguma alteração e somente o que foi alterado
