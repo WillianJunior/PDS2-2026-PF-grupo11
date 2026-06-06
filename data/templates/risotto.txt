@@ -1,0 +1,4 @@
+1;5;Refogar a cebola e o alho no azeite ou manteiga.;Gordura,Vegetal
+2;5;Adicionar o arroz de risoto e selar os graos.;Arroz
+3;20;Adicionar o caldo quente aos poucos, mexendo sempre.;Caldo
+4;5;Finalizar misturando manteiga e queijo parmesao ralado.;Queijo,Manteiga

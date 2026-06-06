@@ -5,35 +5,49 @@ Receita::Receita(const std::string& nome,
                 const std::string& categoria,
                 const std::vector<IngredienteDaReceita>& ingredientes,
                 const std::vector<EtapaDePreparo>& etapasDePreparo,
-                int tempoEstimadoMinutos) {
+                int tempoEstimadoMinutos) 
+                
+                :nome_(nome),
+                templateOrigem_(templateOrigem),
+                categoria_(categoria),
+                ingredientes_(ingredientes),
+                etapasDePreparo_(etapasDePreparo),
+                tempoEstimadoMinutos_(tempoEstimadoMinutos)
+                {
 
 }
 
 std::string Receita::getNome() const {
-    return "";
+    return nome_;
 }
 
 std::string Receita::getTemplateOrigem() const {
-    return "";
+    return templateOrigem_;
 }
 
 std::string Receita::getCategoria() const {
-    return "";
+    return categoria_;
 }
 
 
 std::vector<IngredienteDaReceita> Receita::getIngredientes() const {
-    return {};
+    return ingredientes_;
 }
 
 std::vector<EtapaDePreparo> Receita::getEtapasDePreparo() const {
-    return {};
+    return etapasDePreparo_;
 }
 
 int Receita::getTempoEstimadoMinutos() const {
-    return 0;
+    return tempoEstimadoMinutos_;
 }
 
 bool Receita::estaCompleta() const {
-    return false;
+    if( nome_.empty() || templateOrigem_.empty() || categoria_.empty() || ingredientes_.empty() || etapasDePreparo_.empty() || tempoEstimadoMinutos_ <= 0){
+
+        return false;
+    }else{
+        return true;
+    }
+
 }
