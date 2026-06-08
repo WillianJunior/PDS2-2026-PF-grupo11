@@ -52,7 +52,7 @@ public:
      * @param ingredientes Lista de ingredientes desejados.
      * @return Lista de receitas que satisfazem ambos os critérios.
      */
-    std::vector<Receita> buscarPorNomeEIngredientes(
+    std::vector<Receita> buscarPorNomeIngredientes(
             const std::string& nome,
             const std::vector<std::string>& ingredientes) const;
 

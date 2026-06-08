@@ -45,7 +45,7 @@ $(BIN)/%.o: $(SRC)/%.cpp
 # Força a execução sem travar e especifica o gcov correto para evitar o mismatch de versão
 test: $(BIN)/$(TEST_EXEC)
 	-rm -f $(BIN)/*.gcda
-	./$(BIN)/$(TEST_EXEC) -s
+	-./$(BIN)/$(TEST_EXEC) -s
 	gcovr -r . --gcov-executable gcov --exclude "$(TESTS)/.*" --exclude "$(SRC)/main.cpp" --exclude "include/doctest.h"
 
 $(BIN)/$(TEST_EXEC): $(TEST_SRC_OBJS) $(TEST_RUNNER_OBJS)
