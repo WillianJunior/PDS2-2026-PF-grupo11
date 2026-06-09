@@ -1,25 +1,37 @@
 #include "GerenciadorDeTemplate.hpp"
 
 bool GerenciadorDeTemplate::adicionarTemplate(const Template& novoTemplate) {
-    return false;
+    int id = novoTemplate.getId();
+    auto res = mapaDeTemplates.emplace(id, novoTemplate);
+    return res.second; // true se inserido, false se já existia o id
 }
 
 bool GerenciadorDeTemplate::removerTemplate(int id) {
-    return false;
+    return mapaDeTemplates.erase(id) > 0;
 }
 
 Template* GerenciadorDeTemplate::buscarTemplatePorId(int id) {
-    return nullptr;
+    auto it = mapaDeTemplates.find(id);
+    if (it == mapaDeTemplates.end()) return nullptr;
+    return &it->second;
 }
 
 std::vector<Template> GerenciadorDeTemplate::listarTodos() const {
-    return {};
+    std::vector<Template> lista;
+    lista.reserve(mapaDeTemplates.size());
+    for (const auto& par : mapaDeTemplates) {
+        lista.push_back(par.second);
+    }
+    return lista;
 }
 
 std::vector<Template> GerenciadorDeTemplate::filtrarPorCategoria(const FiltroDeCategoria& filtro) const {
-    return {};
+    std::vector<Template> todos = listarTodos();
+    return filtro.aplicarFiltro(todos);
 }
 
 bool GerenciadorDeTemplate::validarIngredienteNoTemplate(int idTemplate, const std::string& tipoIngrediente) const {
-    return false;
+    auto it = mapaDeTemplates.find(idTemplate);
+    if (it == mapaDeTemplates.end()) return false;
+    return it->second.aceitaTipoIngrediente(tipoIngrediente);
 }
