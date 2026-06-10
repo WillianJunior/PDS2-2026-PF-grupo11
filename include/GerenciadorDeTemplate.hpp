@@ -10,10 +10,6 @@
  /**
   * @class GerenciadorDeTemplate
   * @brief Controla o ciclo de vida dos templates e centraliza as operações do sistema.
-  *
-  * Atua como a classe controladora (Controller), gerenciando a coleção de
-  * templates em memória estruturada por IDs. Fornece métodos para criação,
-  * exclusão, busca e integração com as regras de negócio de ingredientes.
   */
 class GerenciadorDeTemplate {
 private:
@@ -21,9 +17,9 @@ private:
 
 public:
     /**
-     * @brief Construtor padrão do Gerenciador.
+     * @brief Construtor do Gerenciador.
      */
-    GerenciadorDeTemplate() = default;
+    GerenciadorDeTemplate();
 
     /**
      * @brief Adiciona um novo template ao sistema.
@@ -75,10 +71,6 @@ public:
      */
     bool validarIngredienteNoTemplate(int idTemplate, const std::string& tipoIngrediente) const;
 
-    /**
-     * @brief Destrutor padrão.
-     */
-    ~GerenciadorDeTemplate() = default;
 };
 
 #endif // GERENCIADORDETEMPLATE_HPP
