@@ -1,0 +1,4 @@
+1;10;Ferver a agua com sal em uma panela grande.;Sal
+2;12;Cozinhar a massa selecionada na agua fervente ate ficar al dente.;Massa
+3;5;Aquecer o molho em fogo baixo.;Molho
+4;5;Escorrer a massa e misturar tudo com o molho e queijo.;Molho,Queijo

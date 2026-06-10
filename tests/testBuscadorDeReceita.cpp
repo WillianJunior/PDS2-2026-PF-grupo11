@@ -10,7 +10,7 @@ TEST_CASE("Testando BuscadorDeReceitas") {
 
         std::vector<std::string> ings = { "Ovo" };
         CHECK(buscador.buscarPorIngredientes(ings).empty() == true);
-        CHECK(buscador.buscarPorNomeEIngredientes("Bolo", ings).empty() == true);
+        CHECK(buscador.buscarPorNomeIngredientes("Bolo", ings).empty() == true);
     }
 
     SUBCASE("Verificando nenhuma receita encontrada") {
