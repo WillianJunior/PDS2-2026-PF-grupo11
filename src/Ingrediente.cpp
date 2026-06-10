@@ -1,4 +1,5 @@
 #include "Ingrediente.hpp"
+#include <stdexcept>
 
 Ingrediente::Ingrediente(const std::string &nome, const std::string &tipo)
     : nome_(nome), tipo_(tipo) {
