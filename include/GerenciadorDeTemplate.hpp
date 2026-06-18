@@ -21,9 +21,9 @@ private:
 
 public:
     /**
-     * @brief Construtor padrão do Gerenciador.
+     * @brief Construtor do Gerenciador.
      */
-    GerenciadorDeTemplate() = default;
+    GerenciadorDeTemplate();
 
     /**
      * @brief Adiciona um novo template ao sistema.

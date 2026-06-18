@@ -1,0 +1,2 @@
+2|Pasta||Massas|Sal,Massa,Molho,Queijo
+3|Risotto||Arroz|Gordura,Vegetal,Arroz,Caldo,Queijo,Manteiga
