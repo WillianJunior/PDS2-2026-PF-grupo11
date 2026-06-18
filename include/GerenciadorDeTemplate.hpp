@@ -6,6 +6,7 @@
 #include <map>
 #include "Template.hpp"
 #include "FiltroDeCategoria.hpp"
+#include <memory>
 
  /**
   * @class GerenciadorDeTemplate
@@ -13,7 +14,7 @@
   */
 class GerenciadorDeTemplate {
 private:
-    std::map<int, Template> mapaDeTemplates; 
+    std::map<int, unique_ptr<Template>> mapaDeTemplates; 
 
 public:
     /**
@@ -26,7 +27,7 @@ public:
      * @param novoTemplate O objeto da classe Template a ser armazenado.
      * @return true se adicionado com sucesso, false se o ID do template já existir no sistema.
      */
-    bool adicionarTemplate(const Template& novoTemplate);
+    bool adicionarTemplate(unique_ptr<Template> novoTemplate);
 
     /**
      * @brief Remove um template do sistema pelo seu identificador.
@@ -50,14 +51,14 @@ public:
      * @brief Retorna a lista completa de todos os templates cadastrados.
      * @return Vetor contendo todos os templates do sistema.
      */
-    std::vector<Template> listarTodos() const;
+    std::vector<Template*> listarTodos() const;
 
     /**
      * @brief Busca e lista templates aplicando uma regra de filtro de categoria.
      * @param filtro Objeto instanciado do FiltroDeCategoria contendo a regra.
      * @return Vetor contendo apenas os templates que passaram na validação do filtro.
      */
-    std::vector<Template> filtrarPorCategoria(const FiltroDeCategoria& filtro) const;
+    std::vector<Template*> filtrarPorCategoria(const FiltroDeCategoria& filtro) const;
 
     /**
      * @brief Delega a validação de um ingrediente para o template espec�fico.
