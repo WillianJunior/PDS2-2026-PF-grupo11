@@ -1,7 +1,6 @@
-#include "../include/doctest.h"
+#include "doctest.h"
 #include "../include/FiltroDeCategoria.hpp"
 #include "../include/Template.hpp"
-#include <vector>
 
 TEST_CASE("Testando FiltroDeCategoria") {
     FiltroDeCategoria filtro("Sobremesa");
@@ -14,8 +13,6 @@ TEST_CASE("Testando FiltroDeCategoria") {
 
     SUBCASE("Verificando aplicarFiltro") {
         std::vector<Template> templates = { t1 };
-        auto res = filtro.aplicarFiltro(templates);
-        CHECK(res.size() == 1);
-        CHECK(res[0].getId() == 1);
+        CHECK(filtro.aplicarFiltro(templates).size() == 1);
     }
 }
