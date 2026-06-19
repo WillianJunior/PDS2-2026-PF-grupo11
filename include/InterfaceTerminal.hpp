@@ -167,7 +167,7 @@ private:
      * @brief Exibe uma lista de templates numerados.
      * @param templates Lista de templates a exibir.
      */
-    void exibirListaTemplates(const std::vector<Template>& templates) const;
+    void exibirListaTemplates(const std::vector<Template*>& templates) const;
 
     // ---------------------------------------------------------------
     // Utilitários de I/O

@@ -17,7 +17,7 @@
   * de negócio referentes aos tipos de ingredientes que ele permite receber.
   */
 class Template {
-private:
+protected:
     int id;                                   ///< Identificador único do template.
     std::string nome;                         ///< Nome descritivo do template.
     std::string conteudo;                     ///< O conteúdo ou estrutura do template.
@@ -52,17 +52,13 @@ public:
      */
     std::string getCategoria() const;
 
-    /**
-     * @brief Adiciona um novo tipo de ingrediente à lista de permitidos deste template.
-     * @param tipo O tipo de ingrediente (ex: "Seco", "Líquido", "Proteína").
-     */
-    void adicionarTipoPermitido(const std::string& tipo);
+    //adicionarTipoPermitido foi substituido pela hierarquia, cada classe filha ja possui regras específicas.
 
     /**
      * @brief Expõe os tipos permitidos.
      * @return Um vetor contendo todas as strings de tipos de ingredientes aceitos.
      */
-    std::vector<std::string> getTiposPermitidos() const;
+    virtual std::vector<std::string> getTiposPermitidos() const;
 
     /**
      * @brief Regra de aceitação: verifica se o template aceita um determinado tipo de ingrediente.
@@ -73,12 +69,12 @@ public:
      * @param tipo O tipo de ingrediente que se deseja testar.
      * @return true se o tipo é permitido, false se for rejeitado.
      */
-    bool aceitaTipoIngrediente(const std::string& tipo) const;
+    virtual bool aceitaTipoIngrediente(const std::string& tipo) const;
 
     /**
      * @brief Destrutor padr�o.
      */
-    ~Template() = default;
+    virtual ~Template() = default;
 };
 
 #endif // TEMPLATE_HPP
