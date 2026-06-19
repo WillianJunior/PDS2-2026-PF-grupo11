@@ -1,5 +1,4 @@
 #include "Receita.hpp"
-#include <stdexcept>
 
 Receita::Receita(const std::string& nome,
                 const std::string& templateOrigem,
@@ -14,10 +13,8 @@ Receita::Receita(const std::string& nome,
                 ingredientes_(ingredientes),
                 etapasDePreparo_(etapasDePreparo),
                 tempoEstimadoMinutos_(tempoEstimadoMinutos)
-{
-    if (tempoEstimadoMinutos < 0) {
-        throw std::invalid_argument("Erro: O tempo estimado de preparo nao pode ser negativo.");
-    }
+                {
+
 }
 
 std::string Receita::getNome() const {

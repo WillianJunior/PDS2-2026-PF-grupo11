@@ -28,12 +28,6 @@ public:
      */
     BuscadorDeReceitas(const std::vector<Receita>& repositorio);
 
-    /**
-     * @brief Adiciona uma nova receita ao repositório do buscador.
-     * @param receita Receita a ser adicionada.
-     */
-    void adicionarReceita(const Receita& receita);
-
     /** @name Buscas (US5) */
     ///@{
 
