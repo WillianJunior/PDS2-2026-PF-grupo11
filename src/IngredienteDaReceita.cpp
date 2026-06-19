@@ -1,29 +1,11 @@
 #include "IngredienteDaReceita.hpp"
-#include <stdexcept>
-
-namespace {
-  constexpr double QUANTIDADE_MAXIMA = 10000.0;
-}
 
 IngredienteDaReceita::IngredienteDaReceita(const Ingrediente &ingrediente,
                                            double quantidade,
                                            const std::string &unidadeDeMedida)
 
     : ingrediente_(ingrediente), quantidade_(quantidade),
-      unidadeDeMedida_(unidadeDeMedida) {
-  
-  if (quantidade <= 0) {
-    throw std::invalid_argument("Quantidade inválida: deve ser maior que zero");
-  }
-  
-  if (quantidade > QUANTIDADE_MAXIMA) {
-    throw std::invalid_argument("Quantidade inválida: excede o limite máximo");
-  }
-
-  if (unidadeDeMedida.empty()) {
-    throw std::invalid_argument("Unidade de medida inválida: não pode ser vazia");
-  }
-}
+      unidadeDeMedida_(unidadeDeMedida) {}
 
 Ingrediente IngredienteDaReceita::getIngrediente() const {
   return ingrediente_;

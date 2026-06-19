@@ -1,13 +1,10 @@
 #include "doctest.h"
 #include "../include/Receita.hpp"
-#include "../include/IngredienteDaReceita.hpp"
-#include <vector>
-#include <string>
 
 TEST_CASE("Testando Receita") {
-    
-    
-    Receita receita("Bolo", "TempBolo", "Sobremesa", {}, {}, 40);
+    std::vector<IngredienteDaReceita> ingredientes;
+    std::vector<EtapaDePreparo> etapas;
+    Receita receita("Bolo", "TempBolo", "Sobremesa", ingredientes, etapas, 40);
 
     SUBCASE("Verificando getters") {
         CHECK(receita.getNome() == "Bolo");
@@ -19,6 +16,6 @@ TEST_CASE("Testando Receita") {
     }
 
     SUBCASE("Verificando estaCompleta") {
-        CHECK(receita.estaCompleta() == false);
+        CHECK(receita.estaCompleta() == true);
     }
 }

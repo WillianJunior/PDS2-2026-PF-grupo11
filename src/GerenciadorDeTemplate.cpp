@@ -1,11 +1,8 @@
 #include "GerenciadorDeTemplate.hpp"
-#include "PizzaTemplate.hpp"
-#include "PastaTemplate.hpp"    
-#include "RisottoTemplate.hpp"
-#include "FiltroDeCategoria.hpp" // CORREÇÃO 1: Faltava este include para compilar filtrarPorCategoria
 #include <algorithm>
 #include <fstream>
 #include <sstream>
+
 
 namespace {
     const std::string ARQUIVO_TEMPLATES = "templates.txt";
@@ -15,17 +12,18 @@ namespace {
         return f.good();
     }
 
-    void salvarTemplatesEmArquivo(const std::vector<Template*>& templates) {
+    // Formato por linha: ID|Nome|Conteudo|Categoria|Tipo1,Tipo2,...
+    void salvarTemplatesEmArquivo(const std::vector<Template>& templates) {
         std::ofstream arquivo(ARQUIVO_TEMPLATES);
-        if (!arquivo.is_open()) return;
+        if (!arquivo.is_open()) return; // falha silenciosa
 
-        for (const auto* tmpl : templates) {
-            arquivo << tmpl->getId() << "|"
-                    << tmpl->getNome() << "|"
-                    << "" << "|" // Conteúdo vazio conforme especificado originalmente
-                    << tmpl->getCategoria() << "|";
+        for (const auto& tmpl : templates) {
+            arquivo << tmpl.getId() << "|"
+                    << tmpl.getNome() << "|"
+                    << /* conteudo */ "" << "|"
+                    << tmpl.getCategoria() << "|";
 
-            auto tipos = tmpl->getTiposPermitidos();
+            auto tipos = tmpl.getTiposPermitidos();
             for (size_t i = 0; i < tipos.size(); ++i) {
                 arquivo << tipos[i];
                 if (i + 1 < tipos.size()) arquivo << ",";
@@ -34,8 +32,8 @@ namespace {
         }
     }
 
-    std::vector<std::unique_ptr<Template>> carregarTemplatesDoArquivo() {
-        std::vector<std::unique_ptr<Template>> templates;
+    std::vector<Template> carregarTemplatesDoArquivo() {
+        std::vector<Template> templates;
         if (!arquivoExiste(ARQUIVO_TEMPLATES)) return templates;
 
         std::ifstream arquivo(ARQUIVO_TEMPLATES);
@@ -55,20 +53,16 @@ namespace {
 
             try {
                 int id = std::stoi(idStr);
-                std::unique_ptr<Template> tmpl;
+                Template tmpl(id, nome, conteudo, categoria);
 
-                if (categoria == "Pizza") {
-                    tmpl = std::make_unique<PizzaTemplate>(id, nome);
-                } else if (categoria == "Pasta") {
-                    tmpl = std::make_unique<PastaTemplate>(id, nome);
-                } else if (categoria == "Risotto") {
-                    tmpl = std::make_unique<RisottoTemplate>(id, nome);
-                } else {
-                    tmpl = std::make_unique<Template>(id, nome, "", categoria);
+                if (!tiposStr.empty()) {
+                    std::istringstream ts(tiposStr);
+                    std::string tipo;
+                    while (std::getline(ts, tipo, ',')) {
+                        if (!tipo.empty()) tmpl.adicionarTipoPermitido(tipo);
+                    }
                 }
-
-                (void)tiposStr; // Ignora o aviso de variável não utilizada de forma limpa
-                templates.push_back(std::move(tmpl));   
+                templates.push_back(tmpl);
             } catch (...) {
                 continue; 
             }
@@ -78,27 +72,31 @@ namespace {
     }
 } 
 
+
 GerenciadorDeTemplate::GerenciadorDeTemplate() {
+    // Ao construir, carregar do arquivo
     auto todos = carregarTemplatesDoArquivo();
     for (auto& t : todos) {
-        mapaDeTemplates.emplace(t->getId(), std::move(t));
+        mapaDeTemplates.emplace(t.getId(), std::move(t));
     }
 }
 
-bool GerenciadorDeTemplate::adicionarTemplate(std::unique_ptr<Template> novoTemplate) {
-    if (!novoTemplate) return false; // Proteção extra caso passem um ponteiro nulo
-    int id = novoTemplate->getId();
-    auto res = mapaDeTemplates.emplace(id, std::move(novoTemplate));
+bool GerenciadorDeTemplate::adicionarTemplate(const Template& novoTemplate) {
+    int id = novoTemplate.getId();
+    auto res = mapaDeTemplates.emplace(id, novoTemplate);
     if (res.second) {
-        salvarTemplatesEmArquivo(listarTodos());
+        // salvar
+        std::vector<Template> todos = listarTodos();
+        salvarTemplatesEmArquivo(todos);
     }
-    return res.second;
+    return res.second; // true se inserido, false se j� existia o id
 }
 
 bool GerenciadorDeTemplate::removerTemplate(int id) {
     bool removed = mapaDeTemplates.erase(id) > 0;
     if (removed) {
-        salvarTemplatesEmArquivo(listarTodos());
+        std::vector<Template> todos = listarTodos();
+        salvarTemplatesEmArquivo(todos);
     }
     return removed;
 }
@@ -106,31 +104,25 @@ bool GerenciadorDeTemplate::removerTemplate(int id) {
 Template* GerenciadorDeTemplate::buscarTemplatePorId(int id) {
     auto it = mapaDeTemplates.find(id);
     if (it == mapaDeTemplates.end()) return nullptr;
-    return it->second.get();
+    return &it->second;
 }
 
-std::vector<Template*> GerenciadorDeTemplate::listarTodos() const {
-    std::vector<Template*> lista;
+std::vector<Template> GerenciadorDeTemplate::listarTodos() const {
+    std::vector<Template> lista;
     lista.reserve(mapaDeTemplates.size());
     for (const auto& par : mapaDeTemplates) {
-        lista.push_back(par.second.get());
+        lista.push_back(par.second);
     }
     return lista;
 }
 
-std::vector<Template*> GerenciadorDeTemplate::filtrarPorCategoria(const FiltroDeCategoria& filtro) const {
-    std::vector<Template*> filtrados;
-    for (const auto& par : mapaDeTemplates) {
-        Template* tmpl = par.second.get();
-        if (filtro.satisfazFiltro(*tmpl)) {
-            filtrados.push_back(tmpl);
-        }
-    }
-    return filtrados;
+std::vector<Template> GerenciadorDeTemplate::filtrarPorCategoria(const FiltroDeCategoria& filtro) const {
+    std::vector<Template> todos = listarTodos();
+    return filtro.aplicarFiltro(todos);
 }
 
 bool GerenciadorDeTemplate::validarIngredienteNoTemplate(int idTemplate, const std::string& tipoIngrediente) const {
     auto it = mapaDeTemplates.find(idTemplate);
     if (it == mapaDeTemplates.end()) return false;
-    return it->second->aceitaTipoIngrediente(tipoIngrediente);
+    return it->second.aceitaTipoIngrediente(tipoIngrediente);
 }
