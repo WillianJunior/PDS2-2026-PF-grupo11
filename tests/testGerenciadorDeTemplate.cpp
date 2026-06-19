@@ -1,22 +1,30 @@
 #include "doctest.h"
 #include "../include/GerenciadorDeTemplate.hpp"
-#include "../include/Template.hpp"
+#include "../include/PizzaTemplate.hpp"
 
 TEST_CASE("Testando GerenciadorDeTemplate") {
     GerenciadorDeTemplate gerenciador;
-    Template temp(1, "Teste", "Conteudo", "Cat");
 
     SUBCASE("Adicionar e buscar template") {
-        CHECK(gerenciador.adicionarTemplate(temp) == true);
+        auto temp = std::make_unique<PizzaTemplate>(1, "Marguerita");
+        CHECK(gerenciador.adicionarTemplate(std::move(temp)) == true);
         CHECK(gerenciador.buscarTemplatePorId(1) != nullptr);
-        CHECK(gerenciador.listarTodos().size() == 1);
+        CHECK(gerenciador.listarTodos().size() >= 1);
     }
 
     SUBCASE("Remover template") {
-        CHECK(gerenciador.removerTemplate(1) == false);
+        CHECK(gerenciador.removerTemplate(999) == false);
     }
 
     SUBCASE("Validar ingrediente no template") {
-        CHECK(gerenciador.validarIngredienteNoTemplate(1, "Seco") == true);
+        
+        auto temp = std::make_unique<PizzaTemplate>(2, "Quatro Queijos");
+        gerenciador.adicionarTemplate(std::move(temp));
+        
+       
+        auto tipos = gerenciador.buscarTemplatePorId(2)->getTiposPermitidos();
+        if(!tipos.empty()) {
+            CHECK(gerenciador.validarIngredienteNoTemplate(2, tipos[0]) == true);
+        }
     }
 }

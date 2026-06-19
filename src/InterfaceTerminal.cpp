@@ -188,8 +188,8 @@ void InterfaceTerminal::fluxoNavegaPorCategoria() {
     // Coleta categorias únicas
     std::vector<std::string> categorias;
     for (const auto& t : todos) {
-        if (std::find(categorias.begin(), categorias.end(), t.getCategoria()) == categorias.end()) {
-            categorias.push_back(t.getCategoria());
+        if (std::find(categorias.begin(), categorias.end(), t->getCategoria()) == categorias.end()) {
+            categorias.push_back(t->getCategoria());
         }
     }
 
@@ -221,7 +221,7 @@ void InterfaceTerminal::fluxoCriarReceita() {
 
     std::cout << "Escolha um template base:\n";
     for (const auto& t : todosTemplates) {
-        std::cout << "  ID: " << t.getId() << " - " << t.getNome() << " (" << t.getCategoria() << ")\n";
+        std::cout << "  ID: " << t->getId() << " - " << t->getNome() << " (" << t->getCategoria() << ")\n";
     }
 
     int idTmpl = lerInteiro("Digite o ID do template escolhido: ");
@@ -433,23 +433,29 @@ void InterfaceTerminal::exibirReceita(const Receita& receita) const {
     }
 }
 
-void InterfaceTerminal::exibirListaReceitas(const std::vector<Receita>& receitas) const {
-    if (receitas.empty()) {
-        std::cout << "\nNenhuma receita encontrada para os criterios informados.\n";
+void InterfaceTerminal::exibirListaTemplates(const std::vector<Template*>& templates) const {
+    if (templates.empty()) {
+        std::cout << "\nNenhum template cadastrado no sistema.\n";
         aguardarEnter();
         return;
     }
 
-    std::cout << "\nRECEITAS ENCONTRADAS:\n";
-    for (size_t i = 0; i < receitas.size(); ++i) {
-        std::cout << "  " << (i + 1) << ". " << receitas[i].getNome() 
-                  << " (Categoria: " << receitas[i].getCategoria() 
-                  << ", Tempo: " << receitas[i].getTempoEstimadoMinutos() << " min)\n";
+    std::cout << "\nTEMPLATES CADASTRADOS:\n";
+    for (const auto& t : templates) {
+        std::cout << "  - ID: " << t->getId() << " | " << t->getNome() << " (" << t->getCategoria() << ")\n";
     }
 
-    int opcao = lerInteiro("\nEscolha o numero de uma receita para ver detalhes (ou 0 para voltar): ");
-    if (opcao > 0 && opcao <= static_cast<int>(receitas.size())) {
-        exibirReceita(receitas[opcao - 1]);
+    int opcao = lerInteiro("\nDigite o ID de um template para ver detalhes (ou 0 para voltar): ");
+    if (opcao > 0) {
+        // Encontra o template por ID
+        auto it = std::find_if(templates.begin(), templates.end(), [opcao](const Template* t){
+            return t->getId() == opcao;
+        });
+        if (it != templates.end()) {
+            exibirTemplate(**it);
+        } else {
+            std::cout << "\nID nao encontrado.\n";
+        }
         aguardarEnter();
     }
 }
@@ -467,32 +473,27 @@ void InterfaceTerminal::exibirTemplate(const Template& t) const {
     std::cout << "\n";
 }
 
-void InterfaceTerminal::exibirListaTemplates(const std::vector<Template>& templates) const {
-    if (templates.empty()) {
-        std::cout << "\nNenhum template cadastrado no sistema.\n";
+
+void InterfaceTerminal::exibirListaReceitas(const std::vector<Receita>& receitas) const {
+    if (receitas.empty()) {
+        std::cout << "\nNenhuma receita encontrada.\n";
         aguardarEnter();
         return;
     }
 
-    std::cout << "\nTEMPLATES CADASTRADOS:\n";
-    for (const auto& t : templates) {
-        std::cout << "  - ID: " << t.getId() << " | " << t.getNome() << " (" << t.getCategoria() << ")\n";
+    std::cout << "\nRECEITAS ENCONTRADAS (" << receitas.size() << "):\n";
+    for (size_t i = 0; i < receitas.size(); ++i) {
+        std::cout << "  " << (i + 1) << ". " << receitas[i].getNome()
+                  << " (" << receitas[i].getCategoria() << ")\n";
     }
 
-    int opcao = lerInteiro("\nDigite o ID de um template para ver detalhes (ou 0 para voltar): ");
-    if (opcao > 0) {
-        // Encontra o template por ID
-        auto it = std::find_if(templates.begin(), templates.end(), [opcao](const Template& t){
-            return t.getId() == opcao;
-        });
-        if (it != templates.end()) {
-            exibirTemplate(*it);
-        } else {
-            std::cout << "\nID nao encontrado.\n";
-        }
-        aguardarEnter();
+    int opcao = lerInteiro("\nDigite o numero de uma receita para ver detalhes (ou 0 para voltar): ");
+    if (opcao > 0 && opcao <= static_cast<int>(receitas.size())) {
+        exibirReceita(receitas[opcao - 1]);
     }
+    aguardarEnter();
 }
+
 
 std::string InterfaceTerminal::lerString(const std::string& prompt) const {
     if (!prompt.empty()) {

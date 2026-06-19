@@ -6,18 +6,15 @@
 #include <map>
 #include "Template.hpp"
 #include "FiltroDeCategoria.hpp"
+#include <memory>
 
  /**
   * @class GerenciadorDeTemplate
   * @brief Controla o ciclo de vida dos templates e centraliza as operações do sistema.
-  *
-  * Atua como a classe controladora (Controller), gerenciando a coleção de
-  * templates em memória estruturada por IDs. Fornece métodos para criação,
-  * exclusão, busca e integração com as regras de negócio de ingredientes.
   */
 class GerenciadorDeTemplate {
 private:
-    std::map<int, Template> mapaDeTemplates; 
+    std::map<int, std::unique_ptr<Template>> mapaDeTemplates;
 
 public:
     /**
@@ -30,7 +27,7 @@ public:
      * @param novoTemplate O objeto da classe Template a ser armazenado.
      * @return true se adicionado com sucesso, false se o ID do template já existir no sistema.
      */
-    bool adicionarTemplate(const Template& novoTemplate);
+    bool adicionarTemplate(std::unique_ptr<Template> novoTemplate);
 
     /**
      * @brief Remove um template do sistema pelo seu identificador.
@@ -54,14 +51,14 @@ public:
      * @brief Retorna a lista completa de todos os templates cadastrados.
      * @return Vetor contendo todos os templates do sistema.
      */
-    std::vector<Template> listarTodos() const;
+    std::vector<Template*> listarTodos() const;
 
     /**
      * @brief Busca e lista templates aplicando uma regra de filtro de categoria.
      * @param filtro Objeto instanciado do FiltroDeCategoria contendo a regra.
      * @return Vetor contendo apenas os templates que passaram na validação do filtro.
      */
-    std::vector<Template> filtrarPorCategoria(const FiltroDeCategoria& filtro) const;
+    std::vector<Template*> filtrarPorCategoria(const FiltroDeCategoria& filtro) const;
 
     /**
      * @brief Delega a validação de um ingrediente para o template espec�fico.
@@ -75,10 +72,6 @@ public:
      */
     bool validarIngredienteNoTemplate(int idTemplate, const std::string& tipoIngrediente) const;
 
-    /**
-     * @brief Destrutor padrão.
-     */
-    ~GerenciadorDeTemplate() = default;
 };
 
 #endif // GERENCIADORDETEMPLATE_HPP
