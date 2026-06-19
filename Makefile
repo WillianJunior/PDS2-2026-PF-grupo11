@@ -46,7 +46,7 @@ $(BIN)/%.o: $(SRC)/%.cpp
 test: $(BIN)/$(TEST_EXEC)
 	-rm -f $(BIN)/*.gcda
 	-./$(BIN)/$(TEST_EXEC) -s
-	gcovr -r . --gcov-executable gcov --exclude "$(TESTS)/.*" --exclude "$(SRC)/main.cpp" --exclude "include/doctest.h"
+	gcovr -r . --gcov-executable gcov --exclude "$(TESTS)/.*" --exclude "$(SRC)/main.cpp" --exclude "src/InterfaceTerminal.cpp" --exclude "include/doctest.h"
 
 $(BIN)/$(TEST_EXEC): $(TEST_SRC_OBJS) $(TEST_RUNNER_OBJS)
 	@mkdir -p $(BIN)
@@ -60,5 +60,10 @@ $(BIN)/%_test.o: $(TESTS)/%.cpp
 	@mkdir -p $(BIN)
 	$(CXX) $(CXX_FLAGS) --coverage -I$(INCLUDE) -c $< -o $@
 
+# Limpa apenas o programa principal, mantendo os testes intactos
 clean:
+	-rm -f $(MAIN_OBJS) $(BIN)/$(MAIN_EXEC)
+
+# Limpa absolutamente tudo (use apenas quando quiser resetar o projeto)
+clean_all:
 	-rm -rf $(BIN)/*

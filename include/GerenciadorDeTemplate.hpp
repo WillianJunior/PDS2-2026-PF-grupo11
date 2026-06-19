@@ -14,7 +14,7 @@
   */
 class GerenciadorDeTemplate {
 private:
-    std::map<int, unique_ptr<Template>> mapaDeTemplates; 
+    std::map<int, std::unique_ptr<Template>> mapaDeTemplates;
 
 public:
     /**
@@ -27,7 +27,7 @@ public:
      * @param novoTemplate O objeto da classe Template a ser armazenado.
      * @return true se adicionado com sucesso, false se o ID do template já existir no sistema.
      */
-    bool adicionarTemplate(unique_ptr<Template> novoTemplate);
+    bool adicionarTemplate(std::unique_ptr<Template> novoTemplate);
 
     /**
      * @brief Remove um template do sistema pelo seu identificador.
