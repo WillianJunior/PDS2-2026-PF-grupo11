@@ -43,6 +43,8 @@ private:
   Ingrediente ingrediente_;
   double quantidade_;
   std::string unidadeDeMedida_;
+  static constexpr double QUANTIDADE_MAXIMA = 10000.0;
+
 };
 
 #endif

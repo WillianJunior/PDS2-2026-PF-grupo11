@@ -5665,11 +5665,12 @@ namespace {
                 auto const timeStampSize = sizeof("2017-01-16T17:06:45Z");
 
                 std::tm timeInfo;
-#ifdef DOCTEST_PLATFORM_WINDOWS
-                gmtime_s(&timeInfo, &rawtime);
-#else // DOCTEST_PLATFORM_WINDOWS
-                gmtime_r(&rawtime, &timeInfo);
-#endif // DOCTEST_PLATFORM_WINDOWS
+                std::tm* tm_ptr = std::gmtime(&rawtime);
+                if (tm_ptr) {
+                    timeInfo = *tm_ptr;
+                } else {
+                    std::memset(&timeInfo, 0, sizeof(timeInfo));
+                }
 
                 char timeStamp[timeStampSize];
                 const char* const fmt = "%Y-%m-%dT%H:%M:%SZ";
