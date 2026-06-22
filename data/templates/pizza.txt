@@ -1,4 +1,4 @@
-1;15;Preparar a massa misturando farinha, fermento, agua e sal.;Farinha,Liquido,Sal
+1;15;Preparar a massa misturando farinha, fermento, agua e sal.;Tempero
 2;45;Deixar a massa descansar em temperatura ambiente para crescer.;
 3;10;Abrir a massa e adicionar o molho e os ingredientes selecionados.;Molho,Queijo,Proteina,Vegetal
 4;15;Assar no forno bem quente ate a massa dourar.;

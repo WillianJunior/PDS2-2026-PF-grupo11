@@ -2,7 +2,7 @@
 
 RisottoTemplate::RisottoTemplate(int id, const std::string& nome)
     : Template(id, nome, "Base de arroz arbóreo cremoso", "Arrozes") {
-    tiposPermitidos = {"Queijo", "Vegetal", "Proteína",
+    tiposPermitidos = {"Queijo", "Vegetal", "Proteina",
                        "Tempero", "Fruto do Mar", "Caldo"};
 }
 

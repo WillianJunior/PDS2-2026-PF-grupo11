@@ -12,26 +12,30 @@ struct IngredienteCatalogo {
 
 // Catálogo pré-definido de ingredientes sugeridos para facilitar a escolha do usuário
 const std::vector<IngredienteCatalogo> CATALOGO_INGREDIENTES = {
-    {"Farinha de Trigo", "Farinha"},
-    {"Agua", "Liquido"},
-    {"Sal", "Sal"},
+    {"Sal", "Tempero"},
+    {"Manteiga", "Tempero"},
+    {"Azeite de Oliva", "Tempero"},
+    {"Oregano", "Tempero"}
+
     {"Molho de Tomate", "Molho"},
+
     {"Queijo Mozzarella", "Queijo"},
     {"Queijo Parmesao", "Queijo"},
-    {"Manteiga", "Manteiga"},
-    {"Azeite de Oliva", "Gordura"},
+
     {"Pepperoni", "Proteina"},
+    {"Pancetta", "Proteina"}
     {"Presunto", "Proteina"},
     {"Frango Desfiado", "Proteina"},
+    {"Bacon", "Proteina"},
+    {"Carne de Sol","Proteina"}
+
     {"Manjericao", "Vegetal"},
     {"Cogumelos", "Vegetal"},
     {"Cebola", "Vegetal"},
     {"Alho", "Vegetal"},
     {"Tomate Seco", "Vegetal"},
-    {"Arroz Arboreo", "Arroz"},
+
     {"Caldo de Legumes", "Caldo"},
-    {"Espaguete", "Massa"},
-    {"Penne", "Massa"}
 };
 
 namespace {

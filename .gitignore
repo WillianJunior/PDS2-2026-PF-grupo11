@@ -1,5 +1,6 @@
 # Ignorar artefatos gerados pelos testes na pasta tests/
-# (mantém os fontes .cpp/.h rastreados)
+# (mantï¿½m os fontes .cpp/.h rastreados)
+build/
 tests/*.exe
 tests/*_test
 tests/*Tests.exe
@@ -26,7 +27,7 @@ tests/*.coverdata
 tests/.vstest/
 tests/.vstest/*
 
-# Arquivos de cobertura e relatórios comuns (em qualquer lugar)
+# Arquivos de cobertura e relatï¿½rios comuns (em qualquer lugar)
 coverage.*
 lcov.info
 *.coverage
@@ -34,5 +35,5 @@ lcov.info
 .vstest/
 .vstest/*
 
-# Não ignorar headers em include (ex: include/doctest.h) -- mantidos no repositório
+# Nï¿½o ignorar headers em include (ex: include/doctest.h) -- mantidos no repositï¿½rio
 !include/*.h
