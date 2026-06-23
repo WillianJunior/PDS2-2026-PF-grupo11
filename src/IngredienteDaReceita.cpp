@@ -1,10 +1,6 @@
 #include "IngredienteDaReceita.hpp"
 #include <stdexcept>
 
-namespace {
-  constexpr double QUANTIDADE_MAXIMA = 10000.0;
-}
-
 IngredienteDaReceita::IngredienteDaReceita(const Ingrediente &ingrediente,
                                            double quantidade,
                                            const std::string &unidadeDeMedida)

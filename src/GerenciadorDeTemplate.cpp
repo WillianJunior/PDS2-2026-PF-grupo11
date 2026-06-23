@@ -2,7 +2,7 @@
 #include "PizzaTemplate.hpp"
 #include "PastaTemplate.hpp"    
 #include "RisottoTemplate.hpp"
-#include "FiltroDeCategoria.hpp" // CORREÇÃO 1: Faltava este include para compilar filtrarPorCategoria
+#include "FiltroDeCategoria.hpp" 
 #include <algorithm>
 #include <fstream>
 #include <sstream>
@@ -22,7 +22,7 @@ namespace {
         for (const auto* tmpl : templates) {
             arquivo << tmpl->getId() << "|"
                     << tmpl->getNome() << "|"
-                    << "" << "|" // Conteúdo vazio conforme especificado originalmente
+                    << "" << "|" 
                     << tmpl->getCategoria() << "|";
 
             auto tipos = tmpl->getTiposPermitidos();
@@ -67,7 +67,7 @@ namespace {
                     tmpl = std::make_unique<Template>(id, nome, "", categoria);
                 }
 
-                (void)tiposStr; // Ignora o aviso de variável não utilizada de forma limpa
+                (void)tiposStr; 
                 templates.push_back(std::move(tmpl));   
             } catch (...) {
                 continue; 
@@ -86,7 +86,7 @@ GerenciadorDeTemplate::GerenciadorDeTemplate() {
 }
 
 bool GerenciadorDeTemplate::adicionarTemplate(std::unique_ptr<Template> novoTemplate) {
-    if (!novoTemplate) return false; // Proteção extra caso passem um ponteiro nulo
+    if (!novoTemplate) return false; 
     int id = novoTemplate->getId();
     auto res = mapaDeTemplates.emplace(id, std::move(novoTemplate));
     if (res.second) {

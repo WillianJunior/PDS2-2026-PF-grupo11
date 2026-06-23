@@ -15,7 +15,7 @@ const std::vector<IngredienteCatalogo> CATALOGO_INGREDIENTES = {
     {"Sal", "Tempero"},
     {"Manteiga", "Tempero"},
     {"Azeite de Oliva", "Tempero"},
-    {"Oregano", "Tempero"}
+    {"Oregano", "Tempero"},
 
     {"Molho de Tomate", "Molho"},
 
@@ -23,11 +23,11 @@ const std::vector<IngredienteCatalogo> CATALOGO_INGREDIENTES = {
     {"Queijo Parmesao", "Queijo"},
 
     {"Pepperoni", "Proteina"},
-    {"Pancetta", "Proteina"}
+    {"Pancetta", "Proteina"},
     {"Presunto", "Proteina"},
     {"Frango Desfiado", "Proteina"},
     {"Bacon", "Proteina"},
-    {"Carne de Sol","Proteina"}
+    {"Carne de Sol","Proteina"},
 
     {"Manjericao", "Vegetal"},
     {"Cogumelos", "Vegetal"},
