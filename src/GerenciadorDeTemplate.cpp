@@ -109,11 +109,26 @@ Template* GerenciadorDeTemplate::buscarTemplatePorId(int id) {
     return it->second.get();
 }
 
+std::optional<GerenciadorDeTemplate::TemplateConstRef> GerenciadorDeTemplate::buscarTemplatePorIdRef(int id) const {
+    auto it = mapaDeTemplates.find(id);
+    if (it == mapaDeTemplates.end()) return std::nullopt;
+    return std::cref(*it->second);
+}
+
 std::vector<Template*> GerenciadorDeTemplate::listarTodos() const {
     std::vector<Template*> lista;
     lista.reserve(mapaDeTemplates.size());
     for (const auto& par : mapaDeTemplates) {
         lista.push_back(par.second.get());
+    }
+    return lista;
+}
+
+std::vector<GerenciadorDeTemplate::TemplateConstRef> GerenciadorDeTemplate::listarTodosRefs() const {
+    std::vector<TemplateConstRef> lista;
+    lista.reserve(mapaDeTemplates.size());
+    for (const auto& par : mapaDeTemplates) {
+        lista.push_back(std::cref(*par.second));
     }
     return lista;
 }
@@ -124,6 +139,17 @@ std::vector<Template*> GerenciadorDeTemplate::filtrarPorCategoria(const FiltroDe
         Template* tmpl = par.second.get();
         if (filtro.satisfazFiltro(*tmpl)) {
             filtrados.push_back(tmpl);
+        }
+    }
+    return filtrados;
+}
+
+std::vector<GerenciadorDeTemplate::TemplateConstRef> GerenciadorDeTemplate::filtrarPorCategoriaRefs(const FiltroDeCategoria& filtro) const {
+    std::vector<TemplateConstRef> filtrados;
+    for (const auto& par : mapaDeTemplates) {
+        const Template& tmpl = *par.second;
+        if (filtro.satisfazFiltro(tmpl)) {
+            filtrados.push_back(std::cref(tmpl));
         }
     }
     return filtrados;

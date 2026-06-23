@@ -11,6 +11,8 @@
 
 #include <string>
 #include <vector>
+#include <functional>
+#include <optional>
 #include "BuscadorDeReceita.hpp"
 #include "GerenciadorDeTemplate.hpp"
 #include "GeradorDeReceita.hpp"
@@ -31,6 +33,7 @@
  */
 class InterfaceTerminal {
 public:
+    using TemplateConstRef = std::reference_wrapper<const Template>;
 
     /**
      * @brief Construtor da InterfaceTerminal.
@@ -139,7 +142,7 @@ private:
      * @param templateEscolhido Template selecionado pelo usuário.
      * @return SeletorDeIngredientes com a seleção final validada.
      */
-    SeletorDeIngredientes selecionarIngredientes(const Template& templateEscolhido);
+    std::optional<SeletorDeIngredientes> selecionarIngredientes(const Template& templateEscolhido);
 
     // ---------------------------------------------------------------
     // Exibição de entidades
@@ -167,7 +170,7 @@ private:
      * @brief Exibe uma lista de templates numerados.
      * @param templates Lista de templates a exibir.
      */
-    void exibirListaTemplates(const std::vector<Template*>& templates) const;
+    void exibirListaTemplates(const std::vector<TemplateConstRef>& templates) const;
 
     // ---------------------------------------------------------------
     // Utilitários de I/O

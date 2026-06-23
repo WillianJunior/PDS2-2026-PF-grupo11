@@ -98,7 +98,7 @@ bool InterfaceTerminal::processarOpcao(int opcao) {
             fluxoNavegaPorCategoria();
             break;
         case 4:
-            exibirListaTemplates(gerenciador_.listarTodos());
+            exibirListaTemplates(gerenciador_.listarTodosRefs());
             break;
         case 5:
             return false;
@@ -182,7 +182,7 @@ void InterfaceTerminal::buscarPorNomeEIngredientes() {
 
 void InterfaceTerminal::fluxoNavegaPorCategoria() {
     exibirSeparador();
-    auto todos = gerenciador_.listarTodos();
+    auto todos = gerenciador_.listarTodosRefs();
     if (todos.empty()) {
         std::cout << "Nenhum template cadastrado no sistema.\n";
         aguardarEnter();
@@ -191,9 +191,10 @@ void InterfaceTerminal::fluxoNavegaPorCategoria() {
 
     // Coleta categorias únicas
     std::vector<std::string> categorias;
-    for (const auto& t : todos) {
-        if (std::find(categorias.begin(), categorias.end(), t->getCategoria()) == categorias.end()) {
-            categorias.push_back(t->getCategoria());
+    for (const auto& tRef : todos) {
+        const Template& t = tRef.get();
+        if (std::find(categorias.begin(), categorias.end(), t.getCategoria()) == categorias.end()) {
+            categorias.push_back(t.getCategoria());
         }
     }
 
@@ -205,7 +206,7 @@ void InterfaceTerminal::fluxoNavegaPorCategoria() {
     int opcao = lerInteiro("Escolha uma categoria: ");
     if (opcao > 0 && opcao <= static_cast<int>(categorias.size())) {
         FiltroDeCategoria filtro(categorias[opcao - 1]);
-        auto templatesFiltrados = gerenciador_.filtrarPorCategoria(filtro);
+        auto templatesFiltrados = gerenciador_.filtrarPorCategoriaRefs(filtro);
         exibirListaTemplates(templatesFiltrados);
     } else {
         std::cout << "\nOpcao invalida.\n";
@@ -216,7 +217,7 @@ void InterfaceTerminal::fluxoNavegaPorCategoria() {
 void InterfaceTerminal::fluxoCriarReceita() {
     exibirSeparador();
     std::cout << "CRIACAO DE RECEITA PERSONALIZADA\n\n";
-    auto todosTemplates = gerenciador_.listarTodos();
+    auto todosTemplates = gerenciador_.listarTodosRefs();
     if (todosTemplates.empty()) {
         std::cout << "Erro: Nao ha templates cadastrados no sistema. Nao e possivel criar receitas.\n";
         aguardarEnter();
@@ -224,28 +225,45 @@ void InterfaceTerminal::fluxoCriarReceita() {
     }
 
     std::cout << "Escolha um template base:\n";
-    for (const auto& t : todosTemplates) {
-        std::cout << "  ID: " << t->getId() << " - " << t->getNome() << " (" << t->getCategoria() << ")\n";
+    for (const auto& tRef : todosTemplates) {
+        const Template& t = tRef.get();
+        std::cout << "  ID: " << t.getId() << " - " << t.getNome() << " (" << t.getCategoria() << ")\n";
     }
 
-    int idTmpl = lerInteiro("Digite o ID do template escolhido: ");
-    Template* tmpl = gerenciador_.buscarTemplatePorId(idTmpl);
-    if (!tmpl) {
+    int idTmpl = lerInteiro("Digite o ID do template escolhido (ou 0 para voltar): ");
+    if (idTmpl == 0) {
+        return;
+    }
+
+    auto tmplEncontrado = gerenciador_.buscarTemplatePorIdRef(idTmpl);
+    if (!tmplEncontrado) {
         std::cout << "\nErro: Template com ID " << idTmpl << " nao encontrado.\n";
         aguardarEnter();
         return;
     }
+    const Template& tmpl = tmplEncontrado.value().get();
 
-    exibirTemplate(*tmpl);
+    exibirTemplate(tmpl);
     
     // Inicia a seleção interativa de ingredientes
-    SeletorDeIngredientes seletor = selecionarIngredientes(*tmpl);
+    auto seletorOpcional = selecionarIngredientes(tmpl);
+    if (!seletorOpcional) {
+        return;
+    }
+    SeletorDeIngredientes seletor = seletorOpcional.value();
     auto selecionados = seletor.getIngredientesSelecionados();
 
-    std::string nomeReceita = lerString("Digite o nome da sua receita: ");
-    std::string categoriaReceita = lerString("Digite a categoria da receita (ex: Massas, Sobremesas) [Enter para usar a do template]: ");
+    std::string nomeReceita = lerString("Digite o nome da sua receita (ou 0 para voltar): ");
+    if (nomeReceita == "0") {
+        return;
+    }
+
+    std::string categoriaReceita = lerString("Digite a categoria da receita (ex: Massas, Sobremesas) [Enter para usar a do template, 0 para voltar]: ");
+    if (categoriaReceita == "0") {
+        return;
+    }
     if (trim(categoriaReceita).empty()) {
-        categoriaReceita = tmpl->getCategoria();
+        categoriaReceita = tmpl.getCategoria();
     }
 
     // Solicita as quantidades e unidades de medida para os ingredientes selecionados
@@ -255,8 +273,11 @@ void InterfaceTerminal::fluxoCriarReceita() {
         std::cout << "\nIngrediente: " << ing.getNome() << " (" << ing.getTipo() << ")\n";
         double qtd = 0;
         while (true) {
-            std::cout << "  Digite a quantidade (maior que 0): ";
+            std::cout << "  Digite a quantidade (maior que 0, ou 0 para voltar): ";
             std::string entrada = lerString("");
+            if (entrada == "0") {
+                return;
+            }
             try {
                 size_t idx;
                 qtd = std::stod(entrada, &idx);
@@ -268,7 +289,10 @@ void InterfaceTerminal::fluxoCriarReceita() {
         }
         std::string unidade = "";
         while (true) {
-            unidade = lerString("  Digite a unidade de medida (ex: g, ml, colheres, unidades): ");
+            unidade = lerString("  Digite a unidade de medida (ex: g, ml, colheres, unidades, ou 0 para voltar): ");
+            if (unidade == "0") {
+                return;
+            }
             if (!unidade.empty()) {
                 break;
             }
@@ -279,7 +303,7 @@ void InterfaceTerminal::fluxoCriarReceita() {
     }
 
     // Cria a receita base para enviar ao Gerador
-    Receita receitaBase(nomeReceita, tmpl->getNome(), categoriaReceita, ingredientesDaReceita, {}, 0);
+    Receita receitaBase(nomeReceita, tmpl.getNome(), categoriaReceita, ingredientesDaReceita, {}, 0);
 
     std::cout << "\nGerando receita culinaria final...\n";
     Receita receitaFinal = gerador_.gerar(receitaBase);
@@ -294,7 +318,7 @@ void InterfaceTerminal::fluxoCriarReceita() {
     aguardarEnter();
 }
 
-SeletorDeIngredientes InterfaceTerminal::selecionarIngredientes(const Template& templateEscolhido) {
+std::optional<SeletorDeIngredientes> InterfaceTerminal::selecionarIngredientes(const Template& templateEscolhido) {
     SeletorDeIngredientes seletor;
     ValidadorDeIngredientes validador;
 
@@ -331,9 +355,13 @@ SeletorDeIngredientes InterfaceTerminal::selecionarIngredientes(const Template& 
         std::cout << "  2. Adicionar ingrediente customizado\n";
         std::cout << "  3. Remover ingrediente selecionado\n";
         std::cout << "  4. Finalizar selecao\n";
+        std::cout << "  0. Voltar ao Menu Principal\n";
         
         int opcao = lerInteiro("Escolha uma opcao: ");
-        if (opcao == 1) {
+        if (opcao == 0) {
+            return std::nullopt;
+        }
+        else if (opcao == 1) {
             std::cout << "\nIngredientes sugeridos no catalogo:\n";
             std::vector<IngredienteCatalogo> permitidos;
             for (const auto& ing : CATALOGO_INGREDIENTES) {
@@ -363,8 +391,15 @@ SeletorDeIngredientes InterfaceTerminal::selecionarIngredientes(const Template& 
             }
         }
         else if (opcao == 2) {
-            std::string nomeIng = lerString("Digite o nome do ingrediente: ");
-            std::string tipoIng = lerString("Digite o tipo do ingrediente: ");
+            std::string nomeIng = lerString("Digite o nome do ingrediente (ou 0 para voltar): ");
+            if (nomeIng == "0") {
+                return std::nullopt;
+            }
+
+            std::string tipoIng = lerString("Digite o tipo do ingrediente (ou 0 para voltar): ");
+            if (tipoIng == "0") {
+                return std::nullopt;
+            }
             if (!nomeIng.empty() && !tipoIng.empty()) {
                 try {
                     Ingrediente ing(nomeIng, tipoIng);
@@ -437,7 +472,7 @@ void InterfaceTerminal::exibirReceita(const Receita& receita) const {
     }
 }
 
-void InterfaceTerminal::exibirListaTemplates(const std::vector<Template*>& templates) const {
+void InterfaceTerminal::exibirListaTemplates(const std::vector<InterfaceTerminal::TemplateConstRef>& templates) const {
     if (templates.empty()) {
         std::cout << "\nNenhum template cadastrado no sistema.\n";
         aguardarEnter();
@@ -445,18 +480,19 @@ void InterfaceTerminal::exibirListaTemplates(const std::vector<Template*>& templ
     }
 
     std::cout << "\nTEMPLATES CADASTRADOS:\n";
-    for (const auto& t : templates) {
-        std::cout << "  - ID: " << t->getId() << " | " << t->getNome() << " (" << t->getCategoria() << ")\n";
+    for (const auto& tRef : templates) {
+        const Template& t = tRef.get();
+        std::cout << "  - ID: " << t.getId() << " | " << t.getNome() << " (" << t.getCategoria() << ")\n";
     }
 
     int opcao = lerInteiro("\nDigite o ID de um template para ver detalhes (ou 0 para voltar): ");
     if (opcao > 0) {
         // Encontra o template por ID
-        auto it = std::find_if(templates.begin(), templates.end(), [opcao](const Template* t){
-            return t->getId() == opcao;
+        auto it = std::find_if(templates.begin(), templates.end(), [opcao](const TemplateConstRef& tRef){
+            return tRef.get().getId() == opcao;
         });
         if (it != templates.end()) {
-            exibirTemplate(**it);
+            exibirTemplate((*it).get());
         } else {
             std::cout << "\nID nao encontrado.\n";
         }

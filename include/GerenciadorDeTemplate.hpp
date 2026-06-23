@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <functional>
+#include <optional>
 #include "Template.hpp"
 #include "FiltroDeCategoria.hpp"
 #include <memory>
@@ -17,6 +19,8 @@ private:
     std::map<int, std::unique_ptr<Template>> mapaDeTemplates;
 
 public:
+    using TemplateConstRef = std::reference_wrapper<const Template>;
+
     /**
      * @brief Construtor do Gerenciador.
      */
@@ -48,10 +52,23 @@ public:
     Template* buscarTemplatePorId(int id);
 
     /**
+     * @brief Busca um template especifico pelo ID sem expor ponteiros crus.
+     * @param id O identificador numerico do template.
+     * @return Referencia ao Template correspondente, ou std::nullopt se nao for encontrado.
+     */
+    std::optional<TemplateConstRef> buscarTemplatePorIdRef(int id) const;
+
+    /**
      * @brief Retorna a lista completa de todos os templates cadastrados.
      * @return Vetor contendo todos os templates do sistema.
      */
     std::vector<Template*> listarTodos() const;
+
+    /**
+     * @brief Retorna todos os templates como referencias nao proprietarias.
+     * @return Vetor contendo referencias constantes aos templates do sistema.
+     */
+    std::vector<TemplateConstRef> listarTodosRefs() const;
 
     /**
      * @brief Busca e lista templates aplicando uma regra de filtro de categoria.
@@ -59,6 +76,13 @@ public:
      * @return Vetor contendo apenas os templates que passaram na validação do filtro.
      */
     std::vector<Template*> filtrarPorCategoria(const FiltroDeCategoria& filtro) const;
+
+    /**
+     * @brief Filtra templates por categoria sem expor ponteiros crus.
+     * @param filtro Objeto instanciado do FiltroDeCategoria contendo a regra.
+     * @return Vetor contendo referencias constantes aos templates filtrados.
+     */
+    std::vector<TemplateConstRef> filtrarPorCategoriaRefs(const FiltroDeCategoria& filtro) const;
 
     /**
      * @brief Delega a validação de um ingrediente para o template espec�fico.
