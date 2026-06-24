@@ -12,6 +12,18 @@ TEST_CASE("Testando a hierarquia de Classes Template") {
         CHECK(temp.getNome() == "Teste Base");
         CHECK(temp.getCategoria() == "Generico");
         CHECK(temp.aceitaTipoIngrediente("Qualquer") == false);
+
+        temp.setId(2);
+        temp.setNome("Novo Nome");
+        temp.setCategoria("Nova Categoria");
+        temp.setConteudo("Novo Conteudo");
+        temp.setTiposPermitidos({"Queijo", "Molho"});
+
+        CHECK(temp.getId() == 2);
+        CHECK(temp.getNome() == "Novo Nome");
+        CHECK(temp.getCategoria() == "Nova Categoria");
+        CHECK(temp.getTiposPermitidos().size() == 2);
+        CHECK(temp.aceitaTipoIngrediente("Queijo") == true);
     }
 
     SUBCASE("Subclasse PizzaTemplate") {

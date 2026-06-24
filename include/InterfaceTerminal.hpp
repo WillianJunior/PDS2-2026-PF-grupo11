@@ -42,8 +42,8 @@ public:
      * @param gerador       Instância do GeradorDeReceita para criação de receitas.
      */
     InterfaceTerminal(BuscadorDeReceitas& buscador,
-                      GerenciadorDeTemplate& gerenciador,
-                      GeradorDeReceita& gerador);
+        GerenciadorDeTemplate& gerenciador,
+        GeradorDeReceita& gerador);
 
     /**
      * @brief Inicia o loop principal da aplicação.
@@ -136,6 +136,22 @@ private:
      * e gera a receita final via GeradorDeReceita.
      */
     void fluxoCriarReceita();
+
+
+
+    /**
+     * @brief Conduz o fluxo completo de criação de um novo Template.
+     *
+     * Solicita solicita os dados para o novo template.
+     */
+    void fluxoCriarTemplate();
+
+    /**
+     * @brief Permite editar a lista de tipos permitidos de um template.
+     * @param tipos Lista inicial de tipos permitidos.
+     * @return Lista editada pelo usuario.
+     */
+    std::vector<std::string> editarTiposPermitidos(std::vector<std::string> tipos);
 
     /**
      * @brief Conduz a seleção interativa de ingredientes para um template.

@@ -41,16 +41,46 @@ public:
     int getId() const;
 
     /**
+     * @brief Atualiza o ID do template.
+     * @param _id Novo identificador.
+     */
+    void setId(int _id);
+
+    /**
      * @brief Obtém o nome do template.
      * @return Uma string com o nome.
      */
     std::string getNome() const;
 
     /**
+     * @brief Atualiza o nome do template.
+     * @param _nome Novo nome.
+     */
+    void setNome(std::string _nome);
+
+    /**
      * @brief Obtém a categoria do template.
      * @return Uma string com a categoria.
      */
     std::string getCategoria() const;
+
+    /**
+     * @brief Obtem o conteudo do template.
+     * @return Uma string com o conteudo.
+     */
+    std::string getConteudo() const;
+
+    /**
+     * @brief Atualiza a categoria do template.
+     * @param _categoria Nova categoria.
+     */
+    void setCategoria(std::string _categoria);
+
+    /**
+     * @brief Atualiza o conteúdo do template.
+     * @param _conteudo Novo conteúdo.
+     */
+    void setConteudo(std::string _conteudo);
 
     //adicionarTipoPermitido foi substituido pela hierarquia, cada classe filha ja possui regras específicas.
 
@@ -59,6 +89,12 @@ public:
      * @return Um vetor contendo todas as strings de tipos de ingredientes aceitos.
      */
     virtual std::vector<std::string> getTiposPermitidos() const;
+
+    /**
+     * @brief Atualiza a lista de tipos permitidos.
+     * @param _tiposPermitidos Novos tipos permitidos.
+     */
+    void setTiposPermitidos(std::vector<std::string> _tiposPermitidos);
 
     /**
      * @brief Regra de aceitação: verifica se o template aceita um determinado tipo de ingrediente.

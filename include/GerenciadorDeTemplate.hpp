@@ -34,6 +34,19 @@ public:
     bool adicionarTemplate(std::unique_ptr<Template> novoTemplate);
 
     /**
+     * @brief Salva todos os templates cadastrados no arquivo padrao.
+     * @return true se o arquivo foi gravado com sucesso, false caso contrario.
+     */
+    bool salvarTemplatesEmArquivo() const;
+
+    /**
+     * @brief Salva todos os templates cadastrados em um arquivo especifico.
+     * @param caminhoArquivo Caminho do arquivo de destino.
+     * @return true se o arquivo foi gravado com sucesso, false caso contrario.
+     */
+    bool salvarTemplatesEmArquivo(const std::string& caminhoArquivo) const;
+
+    /**
      * @brief Remove um template do sistema pelo seu identificador.
      * @param id O identificador numérico do template a ser removido.
      * @return true se o template foi encontrado e removido, false caso contrário.

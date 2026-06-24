@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <sstream>
 #include <iomanip>
+#include <memory>
+#include <cctype>
 
 struct IngredienteCatalogo {
     std::string nome;
@@ -87,7 +89,8 @@ int InterfaceTerminal::exibirMenuPrincipal() const {
     std::cout << "  2. Buscar Receitas no Acervo\n";
     std::cout << "  3. Navegar Templates por Categoria\n";
     std::cout << "  4. Listar Todos os Templates Disponiveis\n";
-    std::cout << "  5. Sair\n";
+    std::cout << "  5. Criar Novo Template\n";
+    std::cout << "  6. Sair\n";
     return lerInteiro("Escolha uma opcao: ");
 }
 
@@ -106,6 +109,9 @@ bool InterfaceTerminal::processarOpcao(int opcao) {
             exibirListaTemplates(gerenciador_.listarTodosRefs());
             break;
         case 5:
+            fluxoCriarTemplate();
+			break;
+        case 6:
             return false;
         default:
             std::cout << "\nOpcao invalida. Tente novamente.\n";
@@ -323,6 +329,141 @@ void InterfaceTerminal::fluxoCriarReceita() {
     aguardarEnter();
 }
 
+
+void InterfaceTerminal::fluxoCriarTemplate() 
+{
+    exibirSeparador();
+    std::cout << "CRIACAO DE NOVO TEMPLATE PERSONALIZADO\n\n";  
+
+    std::cout << "Deseja utilizar um template existente como base para o novo template? (S/N)\n";
+    std::string resposta = lerString("Digite S para sim ou N para nao: ");
+    std::unique_ptr<Template> novoTemplate;
+    int novoId = static_cast<int>(gerenciador_.listarTodosRefs().size()) + 1;
+    while (gerenciador_.buscarTemplatePorId(novoId) != nullptr) {
+        ++novoId;
+    }
+
+    if (resposta == "S" || resposta == "s") {
+        std::cout << "  TODOS OS TEMPLATES JA EXISTENTES    \n\n";
+
+        auto todosTemplates = gerenciador_.listarTodosRefs();
+        if (todosTemplates.empty()) {
+            std::cout << "Erro: Nao ha templates cadastrados no sistema para usar como base.\n";
+            aguardarEnter();
+            return;
+        }
+        for (const auto& tRef : todosTemplates) {
+            const Template& t = tRef.get();
+            std::cout << "  ID: " << t.getId() << " - " << t.getNome() << " (" << t.getCategoria() << ")\n";
+        }
+
+        int idTmpl = lerInteiro("Digite o ID do template escolhido (ou 0 para voltar): ");
+        if (idTmpl == 0) {
+            return;
+        }
+
+        auto tmplEncontrado = gerenciador_.buscarTemplatePorIdRef(idTmpl);
+        if (!tmplEncontrado) {
+            std::cout << "\nErro: Template com ID " << idTmpl << " nao encontrado.\n";
+            aguardarEnter();
+            return;
+        }
+        const Template& tmpl = tmplEncontrado.value().get();
+
+        exibirTemplate(tmpl);
+
+        std::cout << "Deseja prosseguir com este template ?";
+        std::string resposta = lerString("Digite S para sim ou N para nao: ");
+        if (resposta != "S" && resposta != "s") {
+            return;
+        }
+
+        novoTemplate = std::make_unique<Template>(novoId, tmpl.getNome(), tmpl.getConteudo(), tmpl.getCategoria());
+        novoTemplate->setTiposPermitidos(tmpl.getTiposPermitidos());
+    } else if (resposta == "N" || resposta == "n") {
+        std::string categoria = lerString("Digite a categoria do template: ");
+        if (categoria.empty()) {
+            std::cout << "\nErro: Categoria nao pode ser vazia.\n";
+            aguardarEnter();
+            return;
+        }
+        novoTemplate = std::make_unique<Template>(novoId, "", "", categoria);
+    } else {
+        std::cout << "\nOpcao invalida.\n";
+        aguardarEnter();
+        return;
+    }
+
+    std::string nome = lerString("Digite o nome do novo template: ");
+    if (nome.empty()) {
+        std::cout << "\nErro: Nome nao pode ser vazio.\n";
+        aguardarEnter();
+        return;
+    }
+    novoTemplate->setNome(nome);
+
+    std::string conteudo = lerString("Digite o conteudo/descricao do template: ");
+    novoTemplate->setConteudo(conteudo);
+
+    novoTemplate->setTiposPermitidos(editarTiposPermitidos(novoTemplate->getTiposPermitidos()));
+
+    if (gerenciador_.adicionarTemplate(std::move(novoTemplate))) {
+        std::cout << "\nTemplate salvo com sucesso no arquivo templates.txt.\n";
+    } else {
+        std::cout << "\nErro: Nao foi possivel salvar o template.\n";
+    }
+    aguardarEnter();
+}
+
+std::vector<std::string> InterfaceTerminal::editarTiposPermitidos(std::vector<std::string> tipos) {
+    while (true) {
+        exibirSeparador();
+        std::cout << "TIPOS PERMITIDOS DO TEMPLATE:\n";
+        if (tipos.empty()) {
+            std::cout << "  (Nenhum tipo cadastrado)\n";
+        } else {
+            for (size_t i = 0; i < tipos.size(); ++i) {
+                std::cout << "  " << (i + 1) << ". " << tipos[i] << "\n";
+            }
+        }
+
+        std::cout << "\nOpcoes:\n";
+        std::cout << "  1. Adicionar tipo(s)\n";
+        std::cout << "  2. Remover tipo\n";
+        std::cout << "  3. Finalizar lista\n";
+
+        int opcao = lerInteiro("Escolha uma opcao: ");
+        if (opcao == 1) {
+            auto novosTipos = lerListaCSV("Digite os tipos para adicionar separados por virgula: ");
+            for (const auto& tipo : novosTipos) {
+                if (std::find(tipos.begin(), tipos.end(), tipo) == tipos.end()) {
+                    tipos.push_back(tipo);
+                }
+            }
+        } else if (opcao == 2) {
+            if (tipos.empty()) {
+                std::cout << "\nNao ha tipos para remover.\n";
+                aguardarEnter();
+                continue;
+            }
+
+            int indice = lerInteiro("Digite o numero do tipo para remover (ou 0 para cancelar): ");
+            if (indice > 0 && indice <= static_cast<int>(tipos.size())) {
+                tipos.erase(tipos.begin() + indice - 1);
+                std::cout << "\nTipo removido.\n";
+            } else if (indice != 0) {
+                std::cout << "\nOpcao invalida.\n";
+                aguardarEnter();
+            }
+        } else if (opcao == 3) {
+            return tipos;
+        } else {
+            std::cout << "\nOpcao invalida.\n";
+            aguardarEnter();
+        }
+    }
+}
+
 std::optional<SeletorDeIngredientes> InterfaceTerminal::selecionarIngredientes(const Template& templateEscolhido) {
     SeletorDeIngredientes seletor;
     ValidadorDeIngredientes validador;
@@ -509,6 +650,7 @@ void InterfaceTerminal::exibirTemplate(const Template& t) const {
     exibirSeparador();
     std::cout << "TEMPLATE:  " << t.getNome() << "\n";
     std::cout << "CATEGORIA: " << t.getCategoria() << "\n";
+    std::cout << "CONTEUDO:  " << t.getConteudo() << "\n";
     std::cout << "TIPOS DE INGREDIENTES ACEITOS: ";
     auto tipos = t.getTiposPermitidos();
     for (size_t i = 0; i < tipos.size(); ++i) {
