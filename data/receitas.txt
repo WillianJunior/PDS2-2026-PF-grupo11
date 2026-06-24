@@ -1,0 +1,4 @@
+Pizza Margherita|Pizza|Massas|Farinha de Trigo,Farinha,300,g|Agua,Liquido,150,ml|Sal,Sal,5,g|Molho de Tomate,Molho,100,g|Queijo Mozzarella,Queijo,150,g|Manjericao,Vegetal,10,g
+Pasta Carbonara|Pasta|Massas|Sal,Sal,10,g|Espaguete,Massa,200,g|Gema de Ovo,Molho,3,unidades|Queijo Parmesao,Queijo,50,g|Pancetta,Proteina,100,g
+Risotto alla Milanese|Risotto|Arroz|Arroz Arboreo,Arroz,200,g|Caldo de Legumes,Caldo,500,ml|Queijo Parmesao,Queijo,50,g|Manteiga,Tempero,2,colheres|Cebola,Vegetal,1,unidade|Azafrao,Tempero,1,g
+Pizza Pepperoni|Pizza|Massas|Farinha de Trigo,Farinha,300,g|Agua,Liquido,150,ml|Sal,Sal,5,g|Molho de Tomate,Molho,100,g|Queijo Mozzarella,Queijo,150,g|Pepperoni,Proteina,100,g

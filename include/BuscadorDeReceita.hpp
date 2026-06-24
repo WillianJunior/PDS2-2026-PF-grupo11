@@ -62,6 +62,12 @@ public:
             const std::string& nome,
             const std::vector<std::string>& ingredientes) const;
 
+    /**
+     * @brief Retorna todas as receitas do repositorio.
+     * @return Lista completa de receitas.
+     */
+    std::vector<Receita> obterTodasAsReceitas() const;
+
     ///@}
 
     /** @name Resultados */

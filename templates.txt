@@ -1,3 +1,5 @@
-1|Pizza||Pizza|
-2|Pasta||Massas|
-3|Risotto||Arroz|
+1|Pizza||Massas|Queijo,Molho,Proteina,Vegetal,Tempero,Fruto do Mar
+2|Pasta||Massas|Queijo,Molho,Proteina,Vegetal,Tempero,Fruto do Mar
+3|Risotto||Arroz|Queijo,Vegetal,Proteina,Tempero,Fruto do Mar,Caldo
+4|Pizza Doce|Pizza doce de chococolate|Massas|Queijo,Molho,Proteina,Vegetal,Tempero,Fruto do Mar
+5|Arroz mistureba|Gororoba de arroz|Arroz|Proteina,Tempero,Fruto do Mar,Caldo,Vegetal

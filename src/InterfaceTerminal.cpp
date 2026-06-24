@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <memory>
 #include <cctype>
+#include <fstream>
 
 struct IngredienteCatalogo {
     std::string nome;
@@ -134,7 +135,18 @@ void InterfaceTerminal::fluxoBuscarReceita() {
             case 3:
                 buscarPorNomeEIngredientes();
                 break;
-            case 4:
+            case 4: {
+                exibirSeparador();
+                auto resultados = buscador_.obterTodasAsReceitas();
+                if (resultados.empty()) {
+                    std::cout << "Nenhuma receita encontrada no acervo.\n";
+                    aguardarEnter();
+                } else {
+                    exibirListaReceitas(resultados);
+                }
+                break;
+            }
+            case 5:
                 emSubmenu = false;
                 break;
             default:
@@ -150,7 +162,8 @@ int InterfaceTerminal::exibirSubMenuBusca() const {
     std::cout << "  1. Buscar por Nome do Prato\n";
     std::cout << "  2. Buscar por Ingredientes\n";
     std::cout << "  3. Buscar por Nome e Ingredientes\n";
-    std::cout << "  4. Voltar ao Menu Principal\n";
+    std::cout << "  4. Listar todas as receitas cadastradas\n";
+    std::cout << "  5. Voltar ao Menu Principal\n";
     return lerInteiro("Escolha uma opcao: ");
 }
 
@@ -323,6 +336,23 @@ void InterfaceTerminal::fluxoCriarReceita() {
         std::cout << "\nReceita '" << receitaFinal.getNome() << "' criada com sucesso!\n";
         exibirReceita(receitaFinal);
         buscador_.adicionarReceita(receitaFinal);
+
+        // Salva a receita no arquivo para persistência
+        std::ofstream arquivo("data/receitas.txt", std::ios::app);
+        if (arquivo.is_open()) {
+            arquivo << receitaFinal.getNome() << "|" 
+                    << receitaFinal.getTemplateOrigem() << "|" 
+                    << receitaFinal.getCategoria() << "|";
+            auto ings = receitaFinal.getIngredientes();
+            for (size_t i = 0; i < ings.size(); ++i) {
+                arquivo << ings[i].getIngrediente().getNome() << "," 
+                        << ings[i].getIngrediente().getTipo() << "," 
+                        << ings[i].getQuantidade() << "," 
+                        << ings[i].getUnidadeDeMedida();
+                if (i < ings.size() - 1) arquivo << "|";
+            }
+            arquivo << "\n";
+        }
     } else {
         std::cout << "\nErro na geracao da receita. Verifique se o arquivo do template está disponivel.\n";
     }

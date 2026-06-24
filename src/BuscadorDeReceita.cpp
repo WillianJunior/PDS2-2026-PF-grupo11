@@ -110,6 +110,10 @@ std::vector<Receita> BuscadorDeReceitas::buscarPorNomeIngredientes(const std::st
     return buscadorParcial.buscarPorIngredientes(ingredientes);
 }
 
+std::vector<Receita> BuscadorDeReceitas::obterTodasAsReceitas() const {
+    return repositorio_;
+}
+
 bool BuscadorDeReceitas::nenhumaReceitaEncontrada(const std::vector<Receita>& resultados) const {
     return resultados.empty();
 }
