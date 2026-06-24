@@ -1,7 +1,7 @@
 #include "RisottoTemplate.hpp"
 
 RisottoTemplate::RisottoTemplate(int id, const std::string& nome)
-    : Template(id, nome, "Base de arroz arbóreo cremoso", "Risotto") {
+    : Template(id, nome, "Base de arroz arbóreo cremoso", "Arroz") {
     tiposPermitidos = {"Queijo", "Vegetal", "Proteina",
                        "Tempero", "Fruto do Mar", "Caldo"};
 }

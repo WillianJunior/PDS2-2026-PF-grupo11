@@ -1,7 +1,7 @@
 #include "PizzaTemplate.hpp"
 
 PizzaTemplate::PizzaTemplate(int id, const std::string& nome)
-    : Template(id, nome, "Base de pizza com molho e queijo", "Pizza") {
+    : Template(id, nome, "Base de pizza com molho e queijo", "Massas") {
     tiposPermitidos = {"Queijo", "Molho", "Vegetal", 
                         "Tempero", "Proteina"};
 }
