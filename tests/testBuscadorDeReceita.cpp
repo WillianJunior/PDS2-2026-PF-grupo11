@@ -1,4 +1,4 @@
-#include "doctest.h"
+#include "../include/doctest.h"
 #include "../include/BuscadorDeReceita.hpp"
 
 TEST_CASE("Testando BuscadorDeReceitas") {

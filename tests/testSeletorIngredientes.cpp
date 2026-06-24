@@ -1,4 +1,4 @@
-#include "doctest.h"
+#include "../include/doctest.h"
 #include "../include/SeletorDeIngredientes.hpp"
 #include "../include/Ingrediente.hpp"
 #include "../include/Template.hpp"

@@ -1,4 +1,4 @@
-#include "doctest.h"
+#include "../include/doctest.h"
 #include "../include/Template.hpp"
 #include "../include/PizzaTemplate.hpp"
 #include "../include/PastaTemplate.hpp"

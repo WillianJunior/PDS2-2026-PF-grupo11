@@ -1,4 +1,4 @@
-#include "doctest.h"
+#include "../include/doctest.h"
 #include "../include/ValidadorDeIngredientes.hpp"
 #include "../include/PizzaTemplate.hpp"
 #include "../include/Ingrediente.hpp"

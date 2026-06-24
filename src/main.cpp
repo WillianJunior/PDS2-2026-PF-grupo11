@@ -1,7 +1,7 @@
-#include "GerenciadorDeTemplate.hpp"
-#include "GeradorDeReceita.hpp"
-#include "BuscadorDeReceita.hpp"
-#include "InterfaceTerminal.hpp"
+#include "../include/GerenciadorDeTemplate.hpp"
+#include "../include/GeradorDeReceita.hpp"
+#include "../include/BuscadorDeReceita.hpp"
+#include "../include/InterfaceTerminal.hpp"
 #include <vector>
 #include <iostream>
 

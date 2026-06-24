@@ -1,4 +1,4 @@
-#include "BuscadorDeReceita.hpp"
+#include "../include/BuscadorDeReceita.hpp"
 #include <algorithm>
 #include <cctype>
 #include <stdexcept>

@@ -1,4 +1,4 @@
-#include "Receita.hpp"
+#include "../include/Receita.hpp"
 #include <stdexcept>
 
 Receita::Receita(const std::string& nome,

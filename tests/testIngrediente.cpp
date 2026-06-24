@@ -1,4 +1,4 @@
-#include "doctest.h"
+#include "../include/doctest.h"
 #include "../include/Ingrediente.hpp"
 
 TEST_CASE("Testando a entidade Ingrediente") {

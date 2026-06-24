@@ -1,4 +1,4 @@
-#include "PizzaTemplate.hpp"
+#include "../include/PizzaTemplate.hpp"
 
 PizzaTemplate::PizzaTemplate(int id, const std::string& nome)
     : Template(id, nome, "Base de pizza com molho e queijo", "Massas") {

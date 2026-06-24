@@ -1,4 +1,4 @@
-#include "IngredienteDaReceita.hpp"
+#include "../include/IngredienteDaReceita.hpp"
 #include <stdexcept>
 
 IngredienteDaReceita::IngredienteDaReceita(const Ingrediente &ingrediente,

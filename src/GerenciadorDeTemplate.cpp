@@ -1,8 +1,8 @@
-#include "GerenciadorDeTemplate.hpp"
-#include "PizzaTemplate.hpp"
-#include "PastaTemplate.hpp"    
-#include "RisottoTemplate.hpp"
-#include "FiltroDeCategoria.hpp" 
+#include "../include/GerenciadorDeTemplate.hpp"
+#include "../include/PizzaTemplate.hpp"
+#include "../include/PastaTemplate.hpp"    
+#include "../include/RisottoTemplate.hpp"
+#include "../include/FiltroDeCategoria.hpp" 
 #include <algorithm>
 #include <fstream>
 #include <sstream>

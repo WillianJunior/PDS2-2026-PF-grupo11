@@ -1,4 +1,4 @@
-#include "doctest.h"
+#include "../include/doctest.h"
 #include "../include/InterfaceTerminal.hpp"
 #include "../include/BuscadorDeReceita.hpp"
 #include "../include/GerenciadorDeTemplate.hpp"

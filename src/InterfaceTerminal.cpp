@@ -1,4 +1,4 @@
-#include "InterfaceTerminal.hpp"
+#include "../include/InterfaceTerminal.hpp"
 #include <iostream>
 #include <limits>
 #include <algorithm>
@@ -36,6 +36,11 @@ const std::vector<IngredienteCatalogo> CATALOGO_INGREDIENTES = {
     {"Tomate Seco", "Vegetal"},
 
     {"Caldo de Legumes", "Caldo"},
+
+    {"Camarões", "Fruto do Mar"},
+    {"Vongole", "Fruto do Mar"},
+    {"Polvo", "Fruto do Mar"},
+	{"Lula", "Fruto do Mar"}
 };
 
 namespace {

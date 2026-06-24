@@ -1,4 +1,4 @@
-#include "Ingrediente.hpp"
+#include "../include/Ingrediente.hpp"
 #include <stdexcept>
 
 Ingrediente::Ingrediente(const std::string &nome, const std::string &tipo)

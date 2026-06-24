@@ -1,4 +1,4 @@
-#include "ValidadorDeIngredientes.hpp"
+#include "../include/ValidadorDeIngredientes.hpp"
 
 bool ValidadorDeIngredientes::validarIngrediente(
     const Ingrediente &ingrediente, const Template &templateReceita) const {

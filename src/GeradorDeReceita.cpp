@@ -1,4 +1,4 @@
-#include "GeradorDeReceita.hpp"
+#include "../include/GeradorDeReceita.hpp"
 #include <algorithm>
 #include <cctype>
 #include <fstream>

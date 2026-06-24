@@ -1,4 +1,4 @@
-#include "Template.hpp"
+#include "../include/Template.hpp"
 #include <algorithm>
 
 Template::Template(int _id, std::string _nome, std::string _conteudo, std::string _categoria)
