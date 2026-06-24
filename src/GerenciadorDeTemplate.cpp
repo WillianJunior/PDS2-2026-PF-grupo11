@@ -59,9 +59,9 @@ namespace {
 
                 if (categoria == "Pizza") {
                     tmpl = std::make_unique<PizzaTemplate>(id, nome);
-                } else if (categoria == "Pasta") {
+                } else if (categoria == "Pasta" || categoria == "Massas") {
                     tmpl = std::make_unique<PastaTemplate>(id, nome);
-                } else if (categoria == "Risotto") {
+                } else if (categoria == "Risotto" || categoria == "Arroz") {
                     tmpl = std::make_unique<RisottoTemplate>(id, nome);
                 } else {
                     tmpl = std::make_unique<Template>(id, nome, "", categoria);
