@@ -17,6 +17,8 @@
 class GerenciadorDeTemplate {
 private:
     std::map<int, std::unique_ptr<Template>> mapaDeTemplates;
+    std::string caminhoArquivo_;
+
 
 public:
     using TemplateConstRef = std::reference_wrapper<const Template>;
@@ -25,6 +27,17 @@ public:
      * @brief Construtor do Gerenciador.
      */
     GerenciadorDeTemplate();
+
+    /**
+    * @brief Construtor com arquivo de persistência personalizado.
+    *
+    * Inicializa o gerenciador carregando templates do arquivo informado.
+    * Útil para testes, evitando contaminação do arquivo real "templates.txt".
+    *
+    * @param caminhoArquivo Caminho para o arquivo de persistência a ser usado.
+    * @note Se o arquivo não existir, o gerenciador inicia vazio e o cria no primeiro salvamento.
+    */
+    GerenciadorDeTemplate(const std::string& caminhoArquivo);
 
     /**
      * @brief Adiciona um novo template ao sistema.
@@ -62,7 +75,7 @@ public:
      * @param id O identificador numérico do template.
      * @return Um ponteiro para o Template correspondente, ou nullptr se não for encontrado.
      */
-    Template* buscarTemplatePorId(int id);
+    std::optional<TemplateConstRef> buscarTemplatePorId(int id) const;
 
     /**
      * @brief Busca um template especifico pelo ID sem expor ponteiros crus.
@@ -75,7 +88,7 @@ public:
      * @brief Retorna a lista completa de todos os templates cadastrados.
      * @return Vetor contendo todos os templates do sistema.
      */
-    std::vector<Template*> listarTodos() const;
+    std::vector<TemplateConstRef> listarTodos() const;
 
     /**
      * @brief Retorna todos os templates como referencias nao proprietarias.
@@ -88,7 +101,8 @@ public:
      * @param filtro Objeto instanciado do FiltroDeCategoria contendo a regra.
      * @return Vetor contendo apenas os templates que passaram na validação do filtro.
      */
-    std::vector<Template*> filtrarPorCategoria(const FiltroDeCategoria& filtro) const;
+    std::vector<TemplateConstRef> filtrarPorCategoria(const FiltroDeCategoria& filtro) const;
+
 
     /**
      * @brief Filtra templates por categoria sem expor ponteiros crus.

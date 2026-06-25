@@ -369,7 +369,7 @@ void InterfaceTerminal::fluxoCriarTemplate()
     std::string resposta = lerString("Digite S para sim ou N para nao: ");
     std::unique_ptr<Template> novoTemplate;
     int novoId = static_cast<int>(gerenciador_.listarTodosRefs().size()) + 1;
-    while (gerenciador_.buscarTemplatePorId(novoId) != nullptr) {
+    while (gerenciador_.buscarTemplatePorId(novoId).has_value()) {
         ++novoId;
     }
 
@@ -408,8 +408,7 @@ void InterfaceTerminal::fluxoCriarTemplate()
             return;
         }
 
-        novoTemplate = std::make_unique<Template>(novoId, tmpl.getNome(), tmpl.getConteudo(), tmpl.getCategoria());
-        novoTemplate->setTiposPermitidos(tmpl.getTiposPermitidos());
+        novoTemplate = std::make_unique<Template>(novoId, tmpl.getNome(), tmpl.getConteudo(), tmpl.getCategoria(), tmpl.getTiposPermitidos());
     } else if (resposta == "N" || resposta == "n") {
         std::string categoria = lerString("Digite a categoria do template: ");
         if (categoria.empty()) {
@@ -435,7 +434,8 @@ void InterfaceTerminal::fluxoCriarTemplate()
     std::string conteudo = lerString("Digite o conteudo/descricao do template: ");
     novoTemplate->setConteudo(conteudo);
 
-    novoTemplate->setTiposPermitidos(editarTiposPermitidos(novoTemplate->getTiposPermitidos()));
+    auto tiposEditados = editarTiposPermitidos(novoTemplate->getTiposPermitidos());
+    novoTemplate = std::make_unique<Template>(novoTemplate->getId(), novoTemplate->getNome(), novoTemplate->getConteudo(), novoTemplate->getCategoria(), std::move(tiposEditados));
 
     if (gerenciador_.adicionarTemplate(std::move(novoTemplate))) {
         std::cout << "\nTemplate salvo com sucesso no arquivo templates.txt.\n";

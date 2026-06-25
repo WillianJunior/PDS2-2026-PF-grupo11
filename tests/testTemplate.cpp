@@ -1,55 +1,45 @@
 #include "../include/doctest.h"
-#include "../include/Template.hpp"
+#include "../include/ValidadorDeIngredientes.hpp"
 #include "../include/PizzaTemplate.hpp"
-#include "../include/PastaTemplate.hpp"
-#include "../include/RisottoTemplate.hpp"
+#include "../include/Ingrediente.hpp"
 
-TEST_CASE("Testando a hierarquia de Classes Template") {
-    
-    SUBCASE("Classe Base Template") {
-        Template temp(1, "Teste Base", "Conteudo", "Generico");
-        CHECK(temp.getId() == 1);
-        CHECK(temp.getNome() == "Teste Base");
-        CHECK(temp.getCategoria() == "Generico");
-        CHECK(temp.aceitaTipoIngrediente("Qualquer") == false);
+TEST_CASE("Testando ValidadorDeIngredientes") {
+    ValidadorDeIngredientes validador;
+    PizzaTemplate temp(1, "Calabresa");
 
-        temp.setId(2);
-        temp.setNome("Novo Nome");
-        temp.setCategoria("Nova Categoria");
-        temp.setConteudo("Novo Conteudo");
-        temp.setTiposPermitidos({"Queijo", "Molho"});
+    auto tiposAceitos = temp.getTiposPermitidos();
+    std::string tipoValido = "Invalido";
+    if(!tiposAceitos.empty()) tipoValido = tiposAceitos[0];
 
-        CHECK(temp.getId() == 2);
-        CHECK(temp.getNome() == "Novo Nome");
-        CHECK(temp.getCategoria() == "Nova Categoria");
-        CHECK(temp.getTiposPermitidos().size() == 2);
-        CHECK(temp.aceitaTipoIngrediente("Queijo") == true);
+    Ingrediente ing("IngredienteTeste", tipoValido);
+
+    SUBCASE("Verificando validacoes com ingrediente valido") {
+        CHECK(validador.validarIngrediente(ing, temp) == true);
+
+        std::vector<Ingrediente> selecao = { ing };
+        CHECK(validador.validarSelecao(selecao, temp) == true);
     }
 
-    SUBCASE("Subclasse PizzaTemplate") {
-        PizzaTemplate pizza(10, "Moda da Casa");
-        CHECK(pizza.getId() == 10);
-        CHECK(pizza.getCategoria() == "Pizza");
-        auto tipos = pizza.getTiposPermitidos();
-        CHECK(tipos.empty() == false); 
-        CHECK(pizza.aceitaTipoIngrediente(tipos[0]) == true);
+    SUBCASE("Verificando selecao vazia retorna false") {
+        std::vector<Ingrediente> selecaoVazia;
+        CHECK(validador.validarSelecao(selecaoVazia, temp) == false);
     }
 
-    SUBCASE("Subclasse PastaTemplate") {
-        PastaTemplate pasta(20, "Fettuccine");
-        CHECK(pasta.getId() == 20);
-        CHECK(pasta.getCategoria() == "Pasta");
-        auto tipos = pasta.getTiposPermitidos();
-        CHECK(tipos.empty() == false);
-        CHECK(pasta.aceitaTipoIngrediente(tipos[0]) == true);
+    SUBCASE("Selecao com ingrediente invalido retorna false") {
+        Ingrediente ingInvalido("Invalido", "TipoNaoAceito");
+        std::vector<Ingrediente> selecaoInvalida = { ingInvalido };
+        CHECK(validador.validarSelecao(selecaoInvalida, temp) == false);
     }
 
-    SUBCASE("Subclasse RisottoTemplate") {
-        RisottoTemplate risotto(30, "Funghi");
-        CHECK(risotto.getId() == 30);
-        CHECK(risotto.getCategoria() == "Risotto");
-        auto tipos = risotto.getTiposPermitidos();
-        CHECK(tipos.empty() == false);
-        CHECK(risotto.aceitaTipoIngrediente(tipos[0]) == true);
+    SUBCASE("Verificando mensagem de erro para ingrediente invalido") {
+        Ingrediente ingErrado("Errado", "TipoInexistente");
+        std::string msg = validador.gerarMensagemErro(ingErrado, temp);
+        CHECK(msg != "");
+        CHECK(msg.find("Errado") != std::string::npos);
+    }
+
+    SUBCASE("Mensagem de erro para ingrediente valido retorna string vazia") {
+        std::string msg = validador.gerarMensagemErro(ing, temp);
+        CHECK(msg == "");
     }
 }

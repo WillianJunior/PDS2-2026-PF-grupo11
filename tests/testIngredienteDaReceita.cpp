@@ -1,13 +1,16 @@
 #include "../include/doctest.h"
-#include "../include/IngredienteDaReceita.hpp"
+#include "../include/Ingrediente.hpp"
 
-TEST_CASE("Testando IngredienteDaReceita") {
-    Ingrediente ingBase("Farinha", "Seco");
-    IngredienteDaReceita ingReceita(ingBase, 2.5, "Xicaras");
+TEST_CASE("Testando a entidade Ingrediente") {
+    Ingrediente ingrediente("Tomate", "Fruto");
 
-    SUBCASE("Verificando getters") {
-        CHECK(ingReceita.getQuantidade() == doctest::Approx(2.5));
-        CHECK(ingReceita.getUnidadeDeMedida() == "Xicaras");
-        CHECK(ingReceita.getIngrediente().getNome() == "Farinha");
+    SUBCASE("Verificando getters basicos") {
+        CHECK(ingrediente.getNome() == "Tomate");
+        CHECK(ingrediente.getTipo() == "Fruto");
+    }
+
+    SUBCASE("Verificando checagem de tipo") {
+        CHECK(ingrediente.pertenceAoTipo("Fruto") == true);
+        CHECK(ingrediente.pertenceAoTipo("Carne") == false);
     }
 }

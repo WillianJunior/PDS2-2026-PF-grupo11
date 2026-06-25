@@ -17,7 +17,7 @@
   * de negócio referentes aos tipos de ingredientes que ele permite receber.
   */
 class Template {
-protected:
+private:
     int id;                                   ///< Identificador único do template.
     std::string nome;                         ///< Nome descritivo do template.
     std::string conteudo;                     ///< O conteúdo ou estrutura do template.
@@ -32,19 +32,15 @@ public:
      * @param _conteudo Corpo principal do template.
      * @param _categoria Categoria associada.
      */
-    Template(int _id, std::string _nome, std::string _conteudo, std::string _categoria);
+    //// Novo construtor que aceita a lista de tipos permitidos (com valor padrão vazio)
+    Template(int _id, std::string _nome, std::string _conteudo, 
+        std::string _categoria, std::vector<std::string> _tiposPermitidos = {});
 
     /**
      * @brief Obtém o ID do template.
      * @return O valor inteiro do ID.
      */
     int getId() const;
-
-    /**
-     * @brief Atualiza o ID do template.
-     * @param _id Novo identificador.
-     */
-    void setId(int _id);
 
     /**
      * @brief Obtém o nome do template.
@@ -89,12 +85,6 @@ public:
      * @return Um vetor contendo todas as strings de tipos de ingredientes aceitos.
      */
     virtual std::vector<std::string> getTiposPermitidos() const;
-
-    /**
-     * @brief Atualiza a lista de tipos permitidos.
-     * @param _tiposPermitidos Novos tipos permitidos.
-     */
-    void setTiposPermitidos(std::vector<std::string> _tiposPermitidos);
 
     /**
      * @brief Regra de aceitação: verifica se o template aceita um determinado tipo de ingrediente.

@@ -2,16 +2,13 @@
 #include <algorithm>
 #include <utility>
 
-Template::Template(int _id, std::string _nome, std::string _conteudo, std::string _categoria)
-    : id(_id), nome(std::move(_nome)), conteudo(std::move(_conteudo)), categoria(std::move(_categoria)) {
+Template::Template(int _id, std::string _nome, std::string _conteudo, std::string _categoria, std::vector<std::string> _tiposPermitidos)
+    : id(_id), nome(std::move(_nome)), conteudo(std::move(_conteudo)), 
+    categoria(std::move(_categoria)), tiposPermitidos(std::move(_tiposPermitidos)) {
 }
 
 int Template::getId() const {
     return id;
-}
-
-void Template::setId(int _id) {
-    id = _id;
 }
 
 std::string Template::getNome() const {
@@ -40,10 +37,6 @@ void Template::setConteudo(std::string _conteudo) {
 
 std::vector<std::string> Template::getTiposPermitidos() const {
     return tiposPermitidos;
-}
-
-void Template::setTiposPermitidos(std::vector<std::string> _tiposPermitidos) {
-    tiposPermitidos = std::move(_tiposPermitidos);
 }
 
 bool Template::aceitaTipoIngrediente(const std::string& tipo) const {

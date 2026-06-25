@@ -78,11 +78,11 @@ namespace {
         return campos;
     }
 
-    std::vector<std::unique_ptr<Template>> carregarTemplatesDoArquivo() {
+    std::vector<std::unique_ptr<Template>> carregarTemplatesDoArquivo(const std::string& caminhoArquivo) {
         std::vector<std::unique_ptr<Template>> templates;
-        if (!arquivoExiste(ARQUIVO_TEMPLATES)) return templates;
+        if (!arquivoExiste(caminhoArquivo)) return templates;
 
-        std::ifstream arquivo(ARQUIVO_TEMPLATES);
+        std::ifstream arquivo(caminhoArquivo);
         if (!arquivo.is_open()) return templates;
 
         std::string linha;
@@ -108,11 +108,8 @@ namespace {
                 } else if (categoria == "Risotto" || categoria == "Arroz") {
                     tmpl = std::make_unique<RisottoTemplate>(id, nome);
                 } else {
-                    tmpl = std::make_unique<Template>(id, nome, conteudo, categoria);
-                }
-
-                if (!tiposStr.empty()) {
-                    tmpl->setTiposPermitidos(dividirCamposEscapados(tiposStr, ','));
+                    std::vector<std::string> tipos = tiposStr.empty() ? std::vector<std::string>{} : dividirCamposEscapados(tiposStr, ',');
+                    tmpl = std::make_unique<Template>(id, nome, conteudo, categoria, tipos);
                 }
                 tmpl->setConteudo(conteudo);
                 templates.push_back(std::move(tmpl));   
@@ -125,8 +122,15 @@ namespace {
     }
 } 
 
-GerenciadorDeTemplate::GerenciadorDeTemplate() {
-    auto todos = carregarTemplatesDoArquivo();
+GerenciadorDeTemplate::GerenciadorDeTemplate() : caminhoArquivo_("templates.txt") {
+    auto todos = carregarTemplatesDoArquivo(caminhoArquivo_);
+    for (auto& t : todos) {
+        mapaDeTemplates.emplace(t->getId(), std::move(t));
+    }
+}
+
+GerenciadorDeTemplate::GerenciadorDeTemplate(const std::string& caminhoArquivo) : caminhoArquivo_(caminhoArquivo) {
+    auto todos = carregarTemplatesDoArquivo(caminhoArquivo_);
     for (auto& t : todos) {
         mapaDeTemplates.emplace(t->getId(), std::move(t));
     }
@@ -143,7 +147,7 @@ bool GerenciadorDeTemplate::adicionarTemplate(std::unique_ptr<Template> novoTemp
 }
 
 bool GerenciadorDeTemplate::salvarTemplatesEmArquivo() const {
-    return salvarTemplatesEmArquivo(ARQUIVO_TEMPLATES);
+    return salvarTemplatesEmArquivo(caminhoArquivo_);
 }
 
 bool GerenciadorDeTemplate::salvarTemplatesEmArquivo(const std::string& caminhoArquivo) const {
@@ -176,10 +180,10 @@ bool GerenciadorDeTemplate::removerTemplate(int id) {
     return removed;
 }
 
-Template* GerenciadorDeTemplate::buscarTemplatePorId(int id) {
+std::optional<GerenciadorDeTemplate::TemplateConstRef> GerenciadorDeTemplate::buscarTemplatePorId(int id) const {
     auto it = mapaDeTemplates.find(id);
-    if (it == mapaDeTemplates.end()) return nullptr;
-    return it->second.get();
+    if (it == mapaDeTemplates.end()) return std::nullopt;
+    return std::cref(*it->second);
 }
 
 std::optional<GerenciadorDeTemplate::TemplateConstRef> GerenciadorDeTemplate::buscarTemplatePorIdRef(int id) const {
@@ -188,11 +192,11 @@ std::optional<GerenciadorDeTemplate::TemplateConstRef> GerenciadorDeTemplate::bu
     return std::cref(*it->second);
 }
 
-std::vector<Template*> GerenciadorDeTemplate::listarTodos() const {
-    std::vector<Template*> lista;
+std::vector<GerenciadorDeTemplate::TemplateConstRef> GerenciadorDeTemplate::listarTodos() const {
+    std::vector<TemplateConstRef> lista;
     lista.reserve(mapaDeTemplates.size());
     for (const auto& par : mapaDeTemplates) {
-        lista.push_back(par.second.get());
+        lista.push_back(std::cref(*par.second));
     }
     return lista;
 }
@@ -206,12 +210,12 @@ std::vector<GerenciadorDeTemplate::TemplateConstRef> GerenciadorDeTemplate::list
     return lista;
 }
 
-std::vector<Template*> GerenciadorDeTemplate::filtrarPorCategoria(const FiltroDeCategoria& filtro) const {
-    std::vector<Template*> filtrados;
+std::vector<GerenciadorDeTemplate::TemplateConstRef> GerenciadorDeTemplate::filtrarPorCategoria(const FiltroDeCategoria& filtro) const {
+    std::vector<TemplateConstRef> filtrados;
     for (const auto& par : mapaDeTemplates) {
-        Template* tmpl = par.second.get();
-        if (filtro.satisfazFiltro(*tmpl)) {
-            filtrados.push_back(tmpl);
+        const Template& tmpl = *par.second;
+        if (filtro.satisfazFiltro(tmpl)) {
+            filtrados.push_back(std::cref(tmpl));
         }
     }
     return filtrados;

@@ -1,5 +1,15 @@
-1|Pizza||Massas|Queijo,Molho,Proteina,Vegetal,Tempero,Fruto do Mar
-2|Pasta||Massas|Queijo,Molho,Proteina,Vegetal,Tempero,Fruto do Mar
-3|Risotto||Arroz|Queijo,Vegetal,Proteina,Tempero,Fruto do Mar,Caldo
-4|Pizza Doce|Pizza doce de chococolate|Massas|Queijo,Molho,Proteina,Vegetal,Tempero,Fruto do Mar
-5|Arroz mistureba|Gororoba de arroz|Arroz|Proteina,Tempero,Fruto do Mar,Caldo,Vegetal
+1|Pizza||Pasta|Queijo,Molho,Proteina,Vegetal,Tempero,Fruto do Mar
+2|Pasta||Pasta|Queijo,Molho,Proteina,Vegetal,Tempero,Fruto do Mar
+3|Risotto||Risotto|Queijo,Vegetal,Proteina,Tempero,Fruto do Mar,Caldo
+4|Pizza Doce|Pizza doce de chococolate|Pasta|Queijo,Molho,Proteina,Vegetal,Tempero,Fruto do Mar
+5|Arroz mistureba|Gororoba de arroz|Risotto|Queijo,Vegetal,Proteina,Tempero,Fruto do Mar,Caldo
+14|lep|rapariga|labubu|
+15|daj|daas|lak|
+100|Pizza Teste|Base de pizza com molho e queijo|Pizza|Queijo,Molho,Vegetal,Tempero,Proteina
+200|Pizza A|Base de pizza com molho e queijo|Pizza|Queijo,Molho,Vegetal,Tempero,Proteina
+400|Risotto Teste|Base de arroz arbóreo cremoso|Risotto|Queijo,Vegetal,Proteina,Tempero,Fruto do Mar,Caldo
+500|Pizza Refs|Base de pizza com molho e queijo|Pizza|Queijo,Molho,Vegetal,Tempero,Proteina
+600|Pizza Filtro|Base de pizza com molho e queijo|Pizza|Queijo,Molho,Vegetal,Tempero,Proteina
+601|Pasta Filtro|Base de massa italiana|Pasta|Queijo,Molho,Proteina,Vegetal,Tempero,Fruto do Mar
+700|Pizza Validar|Base de pizza com molho e queijo|Pizza|Queijo,Molho,Vegetal,Tempero,Proteina
+800|Pizza Salvar|Base de pizza com molho e queijo|Pizza|Queijo,Molho,Vegetal,Tempero,Proteina
