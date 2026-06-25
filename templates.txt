@@ -2,9 +2,6 @@
 2|Pasta||Pasta|Queijo,Molho,Proteina,Vegetal,Tempero,Fruto do Mar
 3|Risotto||Risotto|Queijo,Vegetal,Proteina,Tempero,Fruto do Mar,Caldo
 4|Pizza Doce|Pizza doce de chococolate|Pasta|Queijo,Molho,Proteina,Vegetal,Tempero,Fruto do Mar
-5|Arroz mistureba|Gororoba de arroz|Risotto|Queijo,Vegetal,Proteina,Tempero,Fruto do Mar,Caldo
-14|lep|rapariga|labubu|
-15|daj|daas|lak|
 100|Pizza Teste|Base de pizza com molho e queijo|Pizza|Queijo,Molho,Vegetal,Tempero,Proteina
 200|Pizza A|Base de pizza com molho e queijo|Pizza|Queijo,Molho,Vegetal,Tempero,Proteina
 400|Risotto Teste|Base de arroz arbóreo cremoso|Risotto|Queijo,Vegetal,Proteina,Tempero,Fruto do Mar,Caldo
